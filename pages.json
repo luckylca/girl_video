@@ -1,0 +1,48 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		},
+		{
+			"path" : "pages/setting/setting",
+			"style" : 
+			{
+				"navigationBarTitleText" : "设置"
+			}
+		},
+		{
+			"path" : "pages/info/info",
+			"style" : 
+			{
+				"navigationBarTitleText" : "关于app"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	  "tabBar": {
+	    "color": "#7A7E83", // 未选中时的文字颜色
+	    "selectedColor": "#3cc51f", // 选中时的文字颜色
+	    "backgroundColor": "#ffffff", // 背景颜色
+	    "borderStyle": "black", // 上边框颜色
+	    "list": [{
+	      "pagePath": "pages/index/index",
+	      "text": "首页",
+	      "iconPath": "/static/tabbar_ico/home.png", // 默认图标路径
+	      "selectedIconPath": "/static/tabbar_ico/homec.png" // 选中时图标路径
+	    }, {
+	      "pagePath": "pages/setting/setting",
+	      "text": "设置",
+	      "iconPath": "/static/tabbar_ico/settingc.png", // 默认图标路径
+	      "selectedIconPath": "/static/tabbar_ico/setting.png" // 选中时图标路径
+	    }]
+	  },
+	"uniIdRouter": {}
+}
