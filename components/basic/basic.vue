@@ -3,17 +3,28 @@
 		<view class="video">
 			<video ref="videoPlayer" :src="url" autoplay="true" enable-play-gesture="true" @ended="end"></video>
 		</view>
-		<view class="text" @click="get_video">
-			下一个
-		</view>
-		
-		
+		<view class="toolBar">
+			<view class="like" v-if="!islike">
+				<image src="/static/basic/收藏.png" style="width: 100%;height: 100%;"></image>
+			</view>
+			<view class="likeed" v-else>
+				<image src="/static/basic/已收藏.png" style="width: 100%;height: 100%;"></image>
+			</view>
+			<view class="text" :class="{ani:isAni}" id="text" @click="get_video">
+				下一个
+			</view>
+			<view class="download">
+				<image src="/static/basic/下载.png" style="width: 100%;height: 100%;"></image>
+			</view>
+		</view>	
 	</view>
+
 </template>
 
 <script setup>
 
 import { ref, onBeforeMount } from 'vue';
+
 const url = ref("https://alimov2.a.kwimgs.com/upic/2023/03/14/07/BMjAyMzAzMTQwNzMyMDRfMzEyNDcxOTkyNF85ODE2OTI5OTUxM18xXzM=_b_B48c337e8ee1a614653d500c9c3c6cf2c.mp4?clientCacheKey=3xhiww7s3qui8ng_b.mp4&tt=b&di=b72e16c7&bp=13414\n")
 let index = 0
 const urls = [
@@ -33,7 +44,8 @@ const urls = [
 ];
 const isautoplay = ref(false)
 const videoPlayer = ref(null);
-
+const isAni = ref(false)
+const islike = ref(false)
 function getStorageSync(key) {
     return new Promise((resolve, reject) => {
         uni.getStorage({
@@ -49,9 +61,9 @@ function getStorageSync(key) {
 }
 
 async function get_video(){
+	isAni.value = true
 	isautoplay.value = await getStorageSync('autoplay');
 	index = await getStorageSync('line');
-
 	uni.showNavigationBarLoading()
 	uni.request({
 		url:urls[index]
@@ -62,7 +74,9 @@ async function get_video(){
 		uni.hideNavigationBarLoading()
 		uni.hideLoading()
 	})
-	
+	setTimeout(()=>{
+		isAni.value = false
+	},300)
 
 }
 
@@ -86,6 +100,14 @@ function end(){
 </script>
 
 <style lang="scss" scoped>
+@keyframes anima
+{
+	0%{transform: scale(1);}
+	25%{transform: scale(0.9);}
+	75%{transform: scale(1.1);}
+	100%{transform: scale(1);}
+}
+
 .layout{
 	
 	.video{
@@ -99,27 +121,51 @@ function end(){
 			width: 100%;
 			height: 100%;
 			object-fit: contain;
+			border-radius: 20rpx;
 		}
 
 		
 	}
 		.text{
 			border:1px solid #ccc;
-			width: 600rpx;
+			width: 400rpx;
 			height: 7vh;
-			margin-left: auto;
-			margin-right: auto;
+			margin-left: 10rpx;
+			margin-right: 10rpx;
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			margin-top: 40rpx;
+			
 			font-size: 38rpx;
 			border-radius: 20rpx;
-			
-	
-		
 		}
-	
+		.text:hover{
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+		}
+		.ani{
+			animation: anima 0.3s ease-in-out;
+		}
+	.toolBar{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-top: 40rpx;
+		.like{
+			width: 100rpx;
+			height: 100rpx;
+			margin-left: 20rpx;
+		}
+		.likeed{
+			width: 100rpx;
+			height: 100rpx;
+		}
+		.download{
+			width: 100rpx;
+			height: 100rpx;
+			margin-right: 20rpx;
+		}
+		
+	}
 	
 }
 

@@ -3,8 +3,6 @@
 		<view class="content">
 			<basic></basic>
 		</view>
-
-
 	</view>
 </template>
 
