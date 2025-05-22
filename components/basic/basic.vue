@@ -5,10 +5,10 @@
 		</view>
 		<view class="toolBar">
 			<view class="like" v-if="!islike">
-				<image src="/static/basic/收藏.png" style="width: 100%;height: 100%;"></image>
+				<image src="/static/basic/收藏.png" style="width: 100%;height: 100%;" @click="like"></image>
 			</view>
 			<view class="likeed" v-else>
-				<image src="/static/basic/已收藏.png" style="width: 100%;height: 100%;"></image>
+				<image src="/static/basic/已收藏.png" style="width: 100%;height: 100%;" @click="like"></image>
 			</view>
 			<view class="text" :class="{ani:isAni}" id="text" @click="get_video">
 				下一个
@@ -22,8 +22,8 @@
 </template>
 
 <script setup>
-
-import { ref, onBeforeMount } from 'vue';
+import { likeStore } from '../../store/like';
+import { ref, onBeforeMount, onMounted } from 'vue';
 
 const url = ref("https://alimov2.a.kwimgs.com/upic/2023/03/14/07/BMjAyMzAzMTQwNzMyMDRfMzEyNDcxOTkyNF85ODE2OTI5OTUxM18xXzM=_b_B48c337e8ee1a614653d500c9c3c6cf2c.mp4?clientCacheKey=3xhiww7s3qui8ng_b.mp4&tt=b&di=b72e16c7&bp=13414\n")
 let index = 0
@@ -46,6 +46,27 @@ const isautoplay = ref(false)
 const videoPlayer = ref(null);
 const isAni = ref(false)
 const islike = ref(false)
+const likeList = ref([])
+const tempLikeItem = {
+	id:0,
+	url:""
+}
+const Store = likeStore()
+function like(){
+	islike.value = !islike.value
+	if(islike.value)
+	{	
+		tempLikeItem.id = likeList.value.length
+		tempLikeItem.url = url.value
+		Store.addLikeList(tempLikeItem)
+	}
+	else
+	{
+		Store.removeLikeList()
+	}
+	console.log(Store.likeList);
+}
+
 function getStorageSync(key) {
     return new Promise((resolve, reject) => {
         uni.getStorage({
@@ -62,6 +83,7 @@ function getStorageSync(key) {
 
 async function get_video(){
 	isAni.value = true
+	islike.value = false
 	isautoplay.value = await getStorageSync('autoplay');
 	index = await getStorageSync('line');
 	uni.showNavigationBarLoading()
@@ -93,7 +115,11 @@ function end(){
 	}
 	
 }
-
+onMounted(()=>{
+	likeList.value = uni.getStorageSync('like')
+	
+	
+})
 
 
 
@@ -158,6 +184,7 @@ function end(){
 		.likeed{
 			width: 100rpx;
 			height: 100rpx;
+			margin-left: 20rpx;
 		}
 		.download{
 			width: 100rpx;

@@ -1,5 +1,19 @@
 <template>
 	<view class="page-container">
+		<view class="loginDisplay" id="loginDisplay">
+			
+		</view>
+		<view class="loginLayout" @click="login">
+			<view class="avatar">
+				{{letter}}
+			</view>
+			<view class="account" v-if="account">
+				{{account}}
+			</view>
+			<view class="account" v-else>
+				请登录
+			</view>
+		</view>
 		<view class="layout">
 			<view class="box1">
 				<text>自动播放</text>
@@ -18,7 +32,6 @@
 				  <view class="checkbox">
 					<uni-data-checkbox class="checkbox" mode="list" v-model="value" :localdata="date" :multiple="false" @change="change"></uni-data-checkbox>
 				  </view>
-				  
 			  </view>
 			</uni-drawer>
 		</view>
@@ -31,8 +44,10 @@ import {ref} from "vue"
 const isChecked = ref(false)
 const showRight = ref(null)
 const value = ref(0)
+const letter = ref("L")
 const date = ref([{"value": 0,"text": "小姐姐1"},{"value": 1,"text": "小姐姐2"},{"value": 2,"text": "女大学生"},{"value": 3,"text": "黑丝"},{"value": 4,"text": "cos"},{"value": 5,"text": "白丝"},{"value": 6,"text": "身材"},{"value": 7,"text": "蛇姐"},{"value": 8,"text": "吊带"},{"value": 9,"text": "玉足"},{"value": 10,"text": "汉服"},{"value": 11,"text": "清纯"},{"value": 12,"text": "萝莉"}])
-
+const srcurl = ref("https://c-ssl.duitang.com/uploads/blog/202209/07/20220907194454_d5cfc.jpg")
+const account = ref("")
 function change(){
 	console.log(value.value);
 	uni.setStorage({
@@ -49,7 +64,11 @@ function info(){
 	});
 	
 }
+function login(){
 	
+	
+	
+}
 function onSwitchChange(){
 	
 	isChecked.value =! isChecked.value
@@ -62,16 +81,59 @@ function onSwitchChange(){
 }	
 
 function openDrawer(){
-	
 	showRight.value.open()
-	
 }
 	
 </script>
 
 <style lang="scss" scoped>
+.loginDisplay{
+	width: 600rpx;
+	height: 800rpx;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%,-50%);
+	background-color: white;
+	z-index: 1000;
+	display: block;
+}
+.loginLayout{
+	// border:1rpx solid red;
+	display: flex;
+	width:250rpx;
+	height: 300rpx;
+	justify-content: center;
+	align-items: center;
+	margin-left: auto;
+	margin-right: auto;
+	flex-direction: column;
+	.avatar{
+		width: 200rpx;
+		height: 200rpx;
+		border-radius: 50%;
+		object-fit: contain;
+		// border: 1px solid red;
+		color: black;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: rgb(137, 207, 240);
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+		font-size: 90rpx;
+	}
+	.account{
+		margin-top: 20rpx;
+		color: #000;
+		font-size: 30rpx;
+	}
+	
+	
+	
+}
 .layout{
-		padding-top: 100rpx;
+	padding-top: 50rpx;
+
 	.box{
 		
 		border-radius: 15rpx;
