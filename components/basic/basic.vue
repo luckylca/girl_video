@@ -47,17 +47,21 @@ const videoPlayer = ref(null);
 const isAni = ref(false)
 const islike = ref(false)
 const likeList = ref([])
-const tempLikeItem = {
-	id:0,
-	url:""
-}
+const title = ref("")
+
 const Store = likeStore()
 function like(){
 	islike.value = !islike.value
 	if(islike.value)
 	{	
+		const tempLikeItem = {
+			id:0,
+			url:"",
+			title:""
+		}
 		tempLikeItem.id = likeList.value.length
 		tempLikeItem.url = url.value
+		tempLikeItem.title = title.value
 		Store.addLikeList(tempLikeItem)
 	}
 	else
@@ -91,7 +95,7 @@ async function get_video(){
 		url:urls[index]
 	}).then(res=>{
 		url.value=res.data.data
-		console.log(urls[index]);
+		title.value = res.data.title
 	}).finally(()=>{
 		uni.hideNavigationBarLoading()
 		uni.hideLoading()

@@ -1,0 +1,1 @@
+<view wx:for="{{a}}" wx:for-item="item" wx:key="b" class="videoContiner"><video src="{{item.a}}"></video></view>

@@ -2,7 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/setting/setting",
-    "pages/info/info"
+    "pages/info/info",
+    "pages/list/list"
   ],
   "window": {
     "navigationBarTextStyle": "black",

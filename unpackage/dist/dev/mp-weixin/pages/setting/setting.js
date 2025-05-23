@@ -16,11 +16,13 @@ const _sfc_main = {
     const isChecked = common_vendor.ref(false);
     const showRight = common_vendor.ref(null);
     const value = common_vendor.ref(0);
+    common_vendor.ref("L");
     const date = common_vendor.ref([{ "value": 0, "text": "小姐姐1" }, { "value": 1, "text": "小姐姐2" }, { "value": 2, "text": "女大学生" }, { "value": 3, "text": "黑丝" }, { "value": 4, "text": "cos" }, { "value": 5, "text": "白丝" }, { "value": 6, "text": "身材" }, { "value": 7, "text": "蛇姐" }, { "value": 8, "text": "吊带" }, { "value": 9, "text": "玉足" }, { "value": 10, "text": "汉服" }, { "value": 11, "text": "清纯" }, { "value": 12, "text": "萝莉" }]);
-    const srcurl = common_vendor.ref("https://c-ssl.duitang.com/uploads/blog/202209/07/20220907194454_d5cfc.jpg");
+    const userSrc = common_vendor.ref("https://tse4-mm.cn.bing.net/th/id/OIP-C.Nj6o69waOC3JTbebyCu-hgHaEc?cb=iwp2&rs=1&pid=ImgDetMain");
+    const loginSrc = common_vendor.ref("https://tse4-mm.cn.bing.net/th/id/OIP-C.Nj6o69waOC3JTbebyCu-hgHaEc?cb=iwp2&rs=1&pid=ImgDetMain");
     const account = common_vendor.ref("");
     function change() {
-      common_vendor.index.__f__("log", "at pages/setting/setting.vue:48", value.value);
+      common_vendor.index.__f__("log", "at pages/setting/setting.vue:70", value.value);
       common_vendor.index.setStorage({
         key: "line",
         data: value.value
@@ -31,40 +33,66 @@ const _sfc_main = {
         url: "../info/info"
       });
     }
+    function likeListOpen() {
+      common_vendor.index.navigateTo({
+        url: "../list/list"
+      });
+    }
+    function loginDisplayOpen() {
+      const loginDisplay = document.getElementById("loginDisplay");
+      loginDisplay.style.display = "block";
+    }
+    function loginDisplayDown() {
+      const loginDisplay = document.getElementById("loginDisplay");
+      loginDisplay.style.display = "none";
+    }
+    function onKeyInput(e) {
+      getQQSrc(e.detail.value);
+    }
+    function getQQSrc(qq) {
+      let url = "http://q.qlogo.cn/headimg_dl?dst_uin=" + qq + "&spec=640&img_type=jpg";
+      loginSrc.value = url;
+    }
     function onSwitchChange() {
       isChecked.value = !isChecked.value;
       common_vendor.index.setStorage({
         key: "autoplay",
         data: isChecked.value
       });
-      common_vendor.index.__f__("log", "at pages/setting/setting.vue:72", isChecked.value);
+      common_vendor.index.__f__("log", "at pages/setting/setting.vue:122", isChecked.value);
     }
     function openDrawer() {
       showRight.value.open();
     }
     return (_ctx, _cache) => {
       return common_vendor.e({
-        a: srcurl.value,
-        b: account.value
+        a: common_vendor.o(loginDisplayDown),
+        b: loginSrc.value,
+        c: common_vendor.o(onKeyInput),
+        d: userSrc.value,
+        e: account.value
       }, account.value ? {
-        c: common_vendor.t(account.value)
+        f: common_vendor.t(account.value)
       } : {}, {
-        d: isChecked.value,
-        e: common_vendor.o(($event) => onSwitchChange(_ctx.e)),
-        f: common_vendor.o(openDrawer),
-        g: common_vendor.o(info),
-        h: common_vendor.o(change),
-        i: common_vendor.o(($event) => value.value = $event),
-        j: common_vendor.p({
+        g: common_vendor.o(loginDisplayOpen),
+        h: isChecked.value,
+        i: common_vendor.o(($event) => onSwitchChange(_ctx.e)),
+        j: common_vendor.o(openDrawer),
+        k: common_vendor.o(likeListOpen),
+        l: common_vendor.o((...args) => _ctx.downloadListOpen && _ctx.downloadListOpen(...args)),
+        m: common_vendor.o(info),
+        n: common_vendor.o(change),
+        o: common_vendor.o(($event) => value.value = $event),
+        p: common_vendor.p({
           mode: "list",
           localdata: date.value,
           multiple: false,
           modelValue: value.value
         }),
-        k: common_vendor.sr(showRight, "018cdf56-0", {
+        q: common_vendor.sr(showRight, "018cdf56-0", {
           "k": "showRight"
         }),
-        l: common_vendor.p({
+        r: common_vendor.p({
           mode: "right",
           width: 150
         })

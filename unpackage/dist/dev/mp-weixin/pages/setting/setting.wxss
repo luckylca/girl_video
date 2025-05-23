@@ -23,20 +23,90 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.layout.data-v-018cdf56 {
-  padding-top: 100rpx;
+.loginDisplay.data-v-018cdf56 {
+  width: 600rpx;
+  height: 800rpx;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  z-index: 1000;
+  display: none;
 }
-.layout .loginLayout.data-v-018cdf56 {
-  border: 1rpx solid red;
+.loginDisplay .avatar.data-v-018cdf56 {
   width: 200rpx;
   height: 200rpx;
+  border-radius: 50%;
+  object-fit: contain;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #89cff0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 90rpx;
+  margin: 40rpx auto;
 }
-.layout .loginLayout .avatar.data-v-018cdf56 {
-  width: 50rpx;
-  height: 50rpx;
+.loginDisplay .accountInput.data-v-018cdf56 {
+  width: 450rpx;
+  height: 80rpx;
+  padding-left: 20rpx;
+  box-sizing: border-box;
+  margin: 20rpx auto;
+  margin-top: 50rpx;
+  color: black;
+  border: 1px solid red;
 }
-.layout .loginLayout .account.data-v-018cdf56 {
-  border: 1px solid #000;
+.loginDisplay .passwordInput.data-v-018cdf56 {
+  width: 450rpx;
+  height: 80rpx;
+  padding-left: 20rpx;
+  box-sizing: border-box;
+  margin: 40rpx auto;
+  color: black;
+  border: 1px solid red;
+}
+.loginDisplay .loginButton.data-v-018cdf56 {
+  width: 450rpx;
+  margin-top: 60rpx;
+}
+.loginDisplay .tip.data-v-018cdf56 {
+  color: black;
+  text-align: center;
+  margin-top: 20rpx;
+  opacity: 0.6;
+}
+.loginLayout.data-v-018cdf56 {
+  display: flex;
+  width: 250rpx;
+  height: 300rpx;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  flex-direction: column;
+}
+.loginLayout .avatar.data-v-018cdf56 {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 50%;
+  object-fit: contain;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #89cff0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 90rpx;
+}
+.loginLayout .account.data-v-018cdf56 {
+  margin-top: 20rpx;
+  color: #000;
+  font-size: 30rpx;
+}
+.layout.data-v-018cdf56 {
+  padding-top: 50rpx;
 }
 .layout .box.data-v-018cdf56 {
   border-radius: 15rpx;

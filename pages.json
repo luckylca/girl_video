@@ -19,6 +19,13 @@
 			{
 				"navigationBarTitleText" : "关于app"
 			}
+		},
+		{
+			"path" : "pages/list/list",
+			"style" : 
+			{
+				"navigationBarTitleText" : "列表"
+			}
 		}
 	],
 	"globalStyle": {

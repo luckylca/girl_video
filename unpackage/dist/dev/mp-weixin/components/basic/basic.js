@@ -27,21 +27,24 @@ const _sfc_main = {
     const isAni = common_vendor.ref(false);
     const islike = common_vendor.ref(false);
     const likeList = common_vendor.ref([]);
-    const tempLikeItem = {
-      id: 0,
-      url: ""
-    };
+    const title = common_vendor.ref("");
     const Store = store_like.likeStore();
     function like() {
       islike.value = !islike.value;
       if (islike.value) {
+        const tempLikeItem = {
+          id: 0,
+          url: "",
+          title: ""
+        };
         tempLikeItem.id = likeList.value.length;
         tempLikeItem.url = url.value;
+        tempLikeItem.title = title.value;
         Store.addLikeList(tempLikeItem);
       } else {
         Store.removeLikeList();
       }
-      common_vendor.index.__f__("log", "at components/basic/basic.vue:67", Store.likeList);
+      common_vendor.index.__f__("log", "at components/basic/basic.vue:71", Store.likeList);
     }
     function getStorageSync(key) {
       return new Promise((resolve, reject) => {
@@ -66,7 +69,7 @@ const _sfc_main = {
         url: urls[index]
       }).then((res) => {
         url.value = res.data.data;
-        common_vendor.index.__f__("log", "at components/basic/basic.vue:94", urls[index]);
+        title.value = res.data.title;
       }).finally(() => {
         common_vendor.index.hideNavigationBarLoading();
         common_vendor.index.hideLoading();
