@@ -14,7 +14,9 @@ export const likeStore = defineStore('like', () => {
   const removeLikeList = () => {
     likeList.value = likeList.value.slice(0, -1)
   }
-
+	const updataLikeList = (list)=>{
+		likeList.value = list
+	}
   // 监听 likeList 变化，自动保存到本地
   watch(
     () => likeList.value,
@@ -23,5 +25,5 @@ export const likeStore = defineStore('like', () => {
     },
     { deep: true }
   )
-  return { likeList, addLikeList, removeLikeList }
+  return { likeList, addLikeList, removeLikeList,updataLikeList }
 })

@@ -18,7 +18,7 @@
     }
   },
   "compileType": "miniprogram",
-  "libVersion": "3.7.8",
+  "libVersion": "3.8.5",
   "appid": "touristappid",
   "projectname": "一个就够",
   "condition": {},

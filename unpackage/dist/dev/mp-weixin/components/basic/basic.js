@@ -29,6 +29,7 @@ const _sfc_main = {
     const likeList = common_vendor.ref([]);
     const title = common_vendor.ref("");
     const Store = store_like.likeStore();
+    likeList.value = Store.likeList;
     function like() {
       islike.value = !islike.value;
       if (islike.value) {
@@ -37,14 +38,15 @@ const _sfc_main = {
           url: "",
           title: ""
         };
-        tempLikeItem.id = likeList.value.length;
+        tempLikeItem.id = Store.likeList.length;
         tempLikeItem.url = url.value;
         tempLikeItem.title = title.value;
+        common_vendor.index.__f__("log", "at components/basic/basic.vue:66", likeList.value.length);
         Store.addLikeList(tempLikeItem);
       } else {
         Store.removeLikeList();
       }
-      common_vendor.index.__f__("log", "at components/basic/basic.vue:71", Store.likeList);
+      common_vendor.index.__f__("log", "at components/basic/basic.vue:73", Store.likeList);
     }
     function getStorageSync(key) {
       return new Promise((resolve, reject) => {

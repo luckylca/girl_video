@@ -33,6 +33,7 @@
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
+		
 	},
 	  "tabBar": {
 	    "color": "#7A7E83", // 未选中时的文字颜色

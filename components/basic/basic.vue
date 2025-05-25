@@ -50,6 +50,7 @@ const likeList = ref([])
 const title = ref("")
 
 const Store = likeStore()
+likeList.value = Store.likeList
 function like(){
 	islike.value = !islike.value
 	if(islike.value)
@@ -59,9 +60,10 @@ function like(){
 			url:"",
 			title:""
 		}
-		tempLikeItem.id = likeList.value.length
+		tempLikeItem.id = Store.likeList.length
 		tempLikeItem.url = url.value
 		tempLikeItem.title = title.value
+		console.log(likeList.value.length);
 		Store.addLikeList(tempLikeItem)
 	}
 	else
@@ -121,8 +123,6 @@ function end(){
 }
 onMounted(()=>{
 	likeList.value = uni.getStorageSync('like')
-	
-	
 })
 
 
