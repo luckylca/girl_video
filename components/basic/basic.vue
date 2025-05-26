@@ -14,7 +14,7 @@
 				下一个
 			</view>
 			<view class="download">
-				<image src="/static/basic/下载.png" style="width: 100%;height: 100%;"></image>
+				<image src="/static/basic/下载.png" style="width: 100%;height: 100%;" @click="downloadVideo"></image>
 			</view>
 		</view>	
 	</view>
@@ -72,7 +72,27 @@ function like(){
 	}
 	console.log(Store.likeList);
 }
-
+async function downloadVideo()
+{
+	uni.showLoading()
+	const res =await uni.downloadFile({
+		url:url.value,
+	})
+	if(res.statusCode==200)
+	{
+		const data = await uni.saveFile({
+			tempFilePath:res.tempFilePath,
+		})
+		uni.showToast({
+			title:"保存成功",icon:'none',
+			duration:1000
+		})
+		console.log(data.savedFilePath);
+		Store.addDownloadTitleList(title.value)
+		console.log(Store.downloadTitleList);
+		uni.hideLoading()
+	}
+}
 function getStorageSync(key) {
     return new Promise((resolve, reject) => {
         uni.getStorage({
@@ -93,7 +113,7 @@ async function get_video(){
 	isautoplay.value = await getStorageSync('autoplay');
 	index = await getStorageSync('line');
 	uni.showNavigationBarLoading()
-	uni.request({
+	const res = await uni.request({
 		url:urls[index]
 	}).then(res=>{
 		url.value=res.data.data

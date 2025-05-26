@@ -1,11 +1,11 @@
 
-.layout.data-v-98a9e0b2{
+.layout.data-v-ac326b99{
 	width: 100%;
 	height: 100vh;
 	position: relative;
 	padding-top: 20rpx;
 }
-.videoContiner.data-v-98a9e0b2{
+.videoContiner.data-v-ac326b99{
 	width: 600rpx;
 	height: 80vh;
 	position: fixed;
@@ -13,9 +13,9 @@
 	left:75rpx;
 	z-index: 1000;
 }
-.videoList.data-v-98a9e0b2{
+.videoList.data-v-ac326b99{
 }
-.ListItem.data-v-98a9e0b2{
+.ListItem.data-v-ac326b99{
 	width: 600rpx;
 	height: 180rpx;
 	margin: 20rpx auto;
@@ -31,7 +31,7 @@
 	0 4px 6px rgba(0, 0, 0, 0.05),   /* 主阴影 */
 	0 1px 3px rgba(0, 0, 0, 0.1);    /* 次级阴影 */
 }
-.black.data-v-98a9e0b2{
+.black.data-v-ac326b99{
 	background-color: rgba(0, 0, 0, 0.5);
 	z-index: 999;
 	width: 100%;

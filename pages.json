@@ -24,7 +24,14 @@
 			"path" : "pages/list/list",
 			"style" : 
 			{
-				"navigationBarTitleText" : "列表"
+				"navigationBarTitleText" : "收藏列表"
+			}
+		},
+		{
+			"path" : "pages/downloadList/downloadList",
+			"style" : 
+			{
+				"navigationBarTitleText" : "下载列表"
 			}
 		}
 	],

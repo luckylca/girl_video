@@ -43,6 +43,11 @@ const _sfc_main = {
         url: "../list/list"
       });
     }
+    function downloadListOpen() {
+      common_vendor.index.navigateTo({
+        url: "../downloadList/downloadList"
+      });
+    }
     function loginDisplayOpen() {
       isShow.value = true;
     }
@@ -59,6 +64,7 @@ const _sfc_main = {
         url: "",
         data: { account: account.value, password: password.value }
       });
+      common_vendor.index.hideLoading();
       if (data.code == 500) {
         common_vendor.index.showToast({
           title: "登录成功",
@@ -84,7 +90,6 @@ const _sfc_main = {
         name.value = data.name;
         Store.updataLikeList(data.list);
       }
-      common_vendor.index.hideLoading();
     }
     function onKeyInput(e) {
       getQQSrc(e.detail.value);
@@ -99,7 +104,7 @@ const _sfc_main = {
         key: "autoplay",
         data: isChecked.value
       });
-      common_vendor.index.__f__("log", "at pages/setting/setting.vue:154", isChecked.value);
+      common_vendor.index.__f__("log", "at pages/setting/setting.vue:160", isChecked.value);
     }
     function openDrawer() {
       showRight.value.open();
@@ -126,7 +131,7 @@ const _sfc_main = {
         n: common_vendor.o(($event) => onSwitchChange(_ctx.e)),
         o: common_vendor.o(openDrawer),
         p: common_vendor.o(likeListOpen),
-        q: common_vendor.o((...args) => _ctx.downloadListOpen && _ctx.downloadListOpen(...args)),
+        q: common_vendor.o(downloadListOpen),
         r: common_vendor.o(info),
         s: common_vendor.o(change),
         t: common_vendor.o(($event) => value.value = $event),

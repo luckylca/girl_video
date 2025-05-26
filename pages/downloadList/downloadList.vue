@@ -1,8 +1,8 @@
 <template>
 	<view class="layout">
 		<view class="videoList">
-			<view class="ListItem" v-for="item in likeList" @click="enterVideo(item.id)" :key="item.id">
-				<span>{{item.title}}</span>
+			<view class="ListItem" v-for="(item,index) in downloadList" @click="enterVideo(index)" :key="index">
+				<span>{{downloadTitleList[index]}}</span>
 			</view>
 		</view>
 		<view class="videoContiner" v-show="isVideoPlay">
@@ -15,18 +15,24 @@
 </template>
 
 <script setup>
-import { likeStore } from '../../store/like';
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import { likeStore } from "../../store/like";
 const Store = likeStore()
-const likeList = ref([])
 const isHover = ref(false)
 const videoIndex = ref(0)
 const isVideoPlay = ref(false)
 const videoUrl = ref("")
-likeList.value = Store.likeList
+const downloadList = ref([])
+const downloadTitleList = ref([])
+downloadTitleList.value = Store.downloadTitleList
+uni.getSavedFileList({
+	success(res) {
+		downloadList.value = res.fileList
+	}
+})
 const enterVideo = (id) =>{
 	isVideoPlay.value = true
-	videoUrl.value = likeList.value[id].url
+	videoUrl.value = downloadList.value[id].filePath
 	isHover.value = true
 }
 const ended = ()=>{

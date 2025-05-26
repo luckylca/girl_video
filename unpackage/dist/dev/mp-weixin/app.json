@@ -3,7 +3,8 @@
     "pages/index/index",
     "pages/setting/setting",
     "pages/info/info",
-    "pages/list/list"
+    "pages/list/list",
+    "pages/downloadList/downloadList"
   ],
   "window": {
     "navigationBarTextStyle": "black",

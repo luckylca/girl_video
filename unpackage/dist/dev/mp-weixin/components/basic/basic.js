@@ -48,6 +48,26 @@ const _sfc_main = {
       }
       common_vendor.index.__f__("log", "at components/basic/basic.vue:73", Store.likeList);
     }
+    async function downloadVideo() {
+      common_vendor.index.showLoading();
+      const res = await common_vendor.index.downloadFile({
+        url: url.value
+      });
+      if (res.statusCode == 200) {
+        const data = await common_vendor.index.saveFile({
+          tempFilePath: res.tempFilePath
+        });
+        common_vendor.index.showToast({
+          title: "保存成功",
+          icon: "none",
+          duration: 1e3
+        });
+        common_vendor.index.__f__("log", "at components/basic/basic.vue:90", data.savedFilePath);
+        Store.addDownloadTitleList(title.value);
+        common_vendor.index.__f__("log", "at components/basic/basic.vue:92", Store.downloadTitleList);
+        common_vendor.index.hideLoading();
+      }
+    }
     function getStorageSync(key) {
       return new Promise((resolve, reject) => {
         common_vendor.index.getStorage({
@@ -67,7 +87,7 @@ const _sfc_main = {
       isautoplay.value = await getStorageSync("autoplay");
       index = await getStorageSync("line");
       common_vendor.index.showNavigationBarLoading();
-      common_vendor.index.request({
+      await common_vendor.index.request({
         url: urls[index]
       }).then((res) => {
         url.value = res.data.data;
@@ -103,7 +123,8 @@ const _sfc_main = {
       }, {
         h: isAni.value ? 1 : "",
         i: common_vendor.o(get_video),
-        j: common_assets._imports_2
+        j: common_assets._imports_2,
+        k: common_vendor.o(downloadVideo)
       });
     };
   }

@@ -7356,7 +7356,7 @@ function isConsoleWritable() {
 function initRuntimeSocketService() {
   const hosts = "192.168.11.1,192.168.119.1,192.168.0.100,127.0.0.1";
   const port = "8090";
-  const id = "mp-weixin_rpAtYM";
+  const id = "mp-weixin__rgQHI";
   const lazy = typeof swan !== "undefined";
   let restoreError = lazy ? () => {
   } : initOnError();
@@ -9092,7 +9092,13 @@ const pages = [
   {
     path: "pages/list/list",
     style: {
-      navigationBarTitleText: "列表"
+      navigationBarTitleText: "收藏列表"
+    }
+  },
+  {
+    path: "pages/downloadList/downloadList",
+    style: {
+      navigationBarTitleText: "下载列表"
     }
   }
 ];

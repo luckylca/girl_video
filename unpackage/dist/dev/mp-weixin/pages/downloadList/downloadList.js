@@ -2,18 +2,24 @@
 const common_vendor = require("../../common/vendor.js");
 const store_like = require("../../store/like.js");
 const _sfc_main = {
-  __name: "list",
+  __name: "downloadList",
   setup(__props) {
     const Store = store_like.likeStore();
-    const likeList = common_vendor.ref([]);
     const isHover = common_vendor.ref(false);
     common_vendor.ref(0);
     const isVideoPlay = common_vendor.ref(false);
     const videoUrl = common_vendor.ref("");
-    likeList.value = Store.likeList;
+    const downloadList = common_vendor.ref([]);
+    const downloadTitleList = common_vendor.ref([]);
+    downloadTitleList.value = Store.downloadTitleList;
+    common_vendor.index.getSavedFileList({
+      success(res) {
+        downloadList.value = res.fileList;
+      }
+    });
     const enterVideo = (id) => {
       isVideoPlay.value = true;
-      videoUrl.value = likeList.value[id].url;
+      videoUrl.value = downloadList.value[id].filePath;
       isHover.value = true;
     };
     const ended = () => {
@@ -22,11 +28,11 @@ const _sfc_main = {
     };
     return (_ctx, _cache) => {
       return {
-        a: common_vendor.f(likeList.value, (item, k0, i0) => {
+        a: common_vendor.f(downloadList.value, (item, index, i0) => {
           return {
-            a: common_vendor.t(item.title),
-            b: common_vendor.o(($event) => enterVideo(item.id), item.id),
-            c: item.id
+            a: common_vendor.t(downloadTitleList.value[index]),
+            b: common_vendor.o(($event) => enterVideo(index), index),
+            c: index
           };
         }),
         b: videoUrl.value,
@@ -38,6 +44,6 @@ const _sfc_main = {
     };
   }
 };
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-98a9e0b2"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-ac326b99"]]);
 wx.createPage(MiniProgramPage);
-//# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/list/list.js.map
+//# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/downloadList/downloadList.js.map

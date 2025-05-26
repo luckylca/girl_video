@@ -76,7 +76,6 @@ function change(){
 		key:"line",
 		data:value.value
 	})
-	
 }
 
 function info(){
@@ -88,6 +87,12 @@ function likeListOpen()
 {
 	uni.navigateTo({
 		url: '../list/list',
+	});
+}
+function downloadListOpen()
+{
+	uni.navigateTo({
+		url: '../downloadList/downloadList',
 	});
 }
 function loginDisplayOpen(){
@@ -109,6 +114,7 @@ async function login()
 		url:"",
 		data:{account:account.value,password:password.value}
 	})
+	uni.hideLoading()
 	if(data.code==500)
 	{
 		uni.showToast({
@@ -131,7 +137,7 @@ async function login()
 		name.value = data.name
 		Store.updataLikeList(data.list)
 	}
-	uni.hideLoading()
+	
 	
 }
 function onKeyInput(e)
