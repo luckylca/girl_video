@@ -1,0 +1,43 @@
+
+.layout.data-v-ac326b99{
+	width: 100%;
+	height: 100vh;
+	position: relative;
+	padding-top: 20rpx;
+}
+.videoContiner.data-v-ac326b99{
+	width: 600rpx;
+	height: 80vh;
+	position: fixed;
+	top:10vh;
+	left:75rpx;
+	z-index: 1000;
+}
+.videoList.data-v-ac326b99{
+}
+.ListItem.data-v-ac326b99{
+	width: 600rpx;
+	height: 180rpx;
+	margin: 20rpx auto;
+	padding: auto 0;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	border-radius: 12px; /* 圆润边角 */
+	border: 1px solid rgba(0, 0, 0, 0.05); /* 极简细边框 */
+	box-shadow: 
+	0 4px 6px rgba(0, 0, 0, 0.05),   /* 主阴影 */
+	0 1px 3px rgba(0, 0, 0, 0.1);    /* 次级阴影 */
+}
+.black.data-v-ac326b99{
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 999;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+	
