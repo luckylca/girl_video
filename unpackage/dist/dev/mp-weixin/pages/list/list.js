@@ -10,12 +10,22 @@ const _sfc_main = {
     common_vendor.ref(0);
     const isVideoPlay = common_vendor.ref(false);
     const videoUrl = common_vendor.ref("");
+    const ischange = common_vendor.ref(false);
+    const offsetmap = common_vendor.ref([]);
     likeList.value = Store.likeList;
-    const enterVideo = (id) => {
-      isVideoPlay.value = true;
-      videoUrl.value = likeList.value[id].url;
-      isHover.value = true;
-    };
+    offsetmap.value = Array.from({ length: likeList.value.length }, (_, index) => ({
+      index,
+      offset: 0
+    }));
+    function ontouchstart(e, index) {
+      common_vendor.index.__f__("log", "at pages/list/list.vue:48", e.touches[0].screenX);
+    }
+    function ontouchmove(e, index) {
+      common_vendor.index.__f__("log", "at pages/list/list.vue:53", e.changedTouches[0].screenX);
+    }
+    function ontouchend(e, index) {
+      common_vendor.index.__f__("log", "at pages/list/list.vue:58", e.changedTouches[0].screenX);
+    }
     const ended = () => {
       isVideoPlay.value = false;
       isHover.value = false;
@@ -25,15 +35,19 @@ const _sfc_main = {
         a: common_vendor.f(likeList.value, (item, k0, i0) => {
           return {
             a: common_vendor.t(item.title),
-            b: common_vendor.o(($event) => enterVideo(item.id), item.id),
-            c: item.id
+            b: common_vendor.o((e) => ontouchstart(e, item.id), item.id),
+            c: common_vendor.o((e) => ontouchmove(e, item.id), item.id),
+            d: common_vendor.o((e) => ontouchend(e, item.id), item.id),
+            e: item.id
           };
         }),
-        b: videoUrl.value,
-        c: common_vendor.o((...args) => _ctx.end && _ctx.end(...args)),
-        d: isVideoPlay.value,
-        e: isHover.value,
-        f: common_vendor.o(ended)
+        b: "translateX(" + _ctx.offset + "px)",
+        c: ischange.value ? 1 : "",
+        d: videoUrl.value,
+        e: common_vendor.o((...args) => _ctx.end && _ctx.end(...args)),
+        f: isVideoPlay.value,
+        g: isHover.value,
+        h: common_vendor.o(ended)
       };
     };
   }

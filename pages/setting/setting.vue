@@ -14,6 +14,9 @@
 				如果未注册则自动注册
 			</view>
 		</view>
+		<view class="black" v-show="isShow" @click="loginDisplayDown">
+			
+		</view>
 		<view class="loginLayout" @click="loginDisplayOpen" >
 			<view class="avatar">
 				<image :src=userSrc mode="" style="width: 100%;height: 100%;border-radius: 50%;"></image>
@@ -102,6 +105,14 @@ function loginDisplayDown()
 {
 	isShow.value = false
 }
+function upLikeList(likeList,account)
+{
+	uni.request({
+		url:"http://60.204.248.38:1315/api/updateLikeList",
+		data:{List:likeList,account:account,},
+		method:'POST'
+	})
+}
 async function login()
 {	
 	if(account.value==""||password.value=="")
@@ -109,32 +120,52 @@ async function login()
 		uni.showToast({ title: '请输入账号和密码', icon: 'none',duration:2000});
 		return
 	}
-	uni.showLoading({ title: '正在登录...' });
+	
+	// uni.showLoading({ title: '正在登录...' });
+	if(Object.keys(Store.userData).length > 0)
+	{
+		await upLikeList(Store.likeList,Store.userData.account)
+		Store.updataUserData({})//清空原先登录信息
+	}
+	
 	const data = await uni.request({
-		url:"",
-		data:{account:account.value,password:password.value}
+		url:"http://60.204.248.38:1315/api/login",
+		data:{account:account.value,password:password.value},
+		method:'POST'
 	})
-	uni.hideLoading()
-	if(data.code==500)
+	// uni.hideLoading()
+	console.log(data);
+	if(data.data.code==500)
 	{
 		uni.showToast({
 			title:'登录成功',icon:"none",duration:2000
 		})
-		name.value = data.name
-		Store.updataLikeList(data.list)
+		isShow.value = false
+		name.value = data.data.name
+		userSrc.value = "http://q.qlogo.cn/headimg_dl?dst_uin=" + data.data.account + "&spec=640&img_type=jpg"
+		let userData = {
+			name:name.value,
+			account:data.data.account,
+			password:data.data.password,
+			src:userSrc.value,
+		}
+		console.log(data.data);
+		Store.updataUserData(userData)
+		Store.updataLikeList(data.data.list)
 	}
-	if(data.code==302)
+	if(data.data.code==302)
 	{
 		uni.showToast({
 			title:'账号或者密码错误',icon:"none",duration:2000
 		})
 	}
-	if(data.code==501)
+	if(data.data.code==501)
 	{
 		uni.showToast({
 			title:'已为你注册账号',icon:"none",duration:2000
 		})
 		name.value = data.name
+		isShow.value = false
 		Store.updataLikeList(data.list)
 	}
 	
@@ -167,6 +198,15 @@ function openDrawer(){
 </script>
 
 <style lang="scss" scoped>
+.black{
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 999;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+}
 .loginDisplay{
 	width: 600rpx;
 	height: 800rpx;
@@ -177,7 +217,7 @@ function openDrawer(){
 	background-color: white;
 	z-index: 1000;
 	display: block;
-	
+	border-radius: 10px;
 	.avatar{
 		width: 200rpx;
 		height: 200rpx;
@@ -201,7 +241,10 @@ function openDrawer(){
 		margin: 20rpx auto;
 		margin-top: 50rpx;
 		color: black;
-		border: 1px solid red;
+		border: 1px solid #ddd;
+		border-radius: 6px;
+		background-color: #fff;
+		box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
 	}
 	.passwordInput{
 		width: 450rpx;
@@ -210,7 +253,10 @@ function openDrawer(){
 		box-sizing: border-box;
 		margin: 40rpx auto;
 		color: black;
-		border: 1px solid red;
+		border: 1px solid #ddd;
+		border-radius: 6px;
+		background-color: #fff;
+		box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
 	}
 	.loginButton{
 		width: 450rpx;

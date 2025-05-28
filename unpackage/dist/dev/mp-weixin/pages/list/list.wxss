@@ -5,6 +5,9 @@
 	position: relative;
 	padding-top: 20rpx;
 }
+.change.data-v-98a9e0b2{
+	transform: translateX(1);
+}
 .videoContiner.data-v-98a9e0b2{
 	width: 600rpx;
 	height: 80vh;

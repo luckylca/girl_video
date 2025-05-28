@@ -33,6 +33,12 @@ const _sfc_main = {
     function like() {
       islike.value = !islike.value;
       if (islike.value) {
+        if (Object.keys(Store.userData).length === 0) {
+          common_vendor.index.showToast({
+            title: "你还没有登录，数据将保存在本地",
+            duration: 1e3
+          });
+        }
         const tempLikeItem = {
           id: 0,
           url: "",
@@ -41,12 +47,11 @@ const _sfc_main = {
         tempLikeItem.id = Store.likeList.length;
         tempLikeItem.url = url.value;
         tempLikeItem.title = title.value;
-        common_vendor.index.__f__("log", "at components/basic/basic.vue:66", likeList.value.length);
         Store.addLikeList(tempLikeItem);
       } else {
         Store.removeLikeList();
       }
-      common_vendor.index.__f__("log", "at components/basic/basic.vue:73", Store.likeList);
+      common_vendor.index.__f__("log", "at components/basic/basic.vue:79", Store.likeList);
     }
     async function downloadVideo() {
       common_vendor.index.showLoading();
@@ -62,9 +67,9 @@ const _sfc_main = {
           icon: "none",
           duration: 1e3
         });
-        common_vendor.index.__f__("log", "at components/basic/basic.vue:90", data.savedFilePath);
+        common_vendor.index.__f__("log", "at components/basic/basic.vue:96", data.savedFilePath);
         Store.addDownloadTitleList(title.value);
-        common_vendor.index.__f__("log", "at components/basic/basic.vue:92", Store.downloadTitleList);
+        common_vendor.index.__f__("log", "at components/basic/basic.vue:98", Store.downloadTitleList);
         common_vendor.index.hideLoading();
       }
     }

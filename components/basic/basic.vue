@@ -55,6 +55,13 @@ function like(){
 	islike.value = !islike.value
 	if(islike.value)
 	{	
+		if(Object.keys(Store.userData).length === 0)
+		{
+			uni.showToast({
+				title:"你还没有登录，数据将保存在本地",
+				duration:1000
+			})
+		}
 		const tempLikeItem = {
 			id:0,
 			url:"",
@@ -63,7 +70,6 @@ function like(){
 		tempLikeItem.id = Store.likeList.length
 		tempLikeItem.url = url.value
 		tempLikeItem.title = title.value
-		console.log(likeList.value.length);
 		Store.addLikeList(tempLikeItem)
 	}
 	else
@@ -114,7 +120,7 @@ async function get_video(){
 	index = await getStorageSync('line');
 	uni.showNavigationBarLoading()
 	const res = await uni.request({
-		url:urls[index]
+		url:urls[index],
 	}).then(res=>{
 		url.value=res.data.data
 		title.value = res.data.title

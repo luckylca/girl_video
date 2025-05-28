@@ -23,6 +23,15 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
+.black.data-v-018cdf56 {
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
 .loginDisplay.data-v-018cdf56 {
   width: 600rpx;
   height: 800rpx;
@@ -33,6 +42,7 @@
   background-color: white;
   z-index: 1000;
   display: block;
+  border-radius: 10px;
 }
 .loginDisplay .avatar.data-v-018cdf56 {
   width: 200rpx;
@@ -56,7 +66,10 @@
   margin: 20rpx auto;
   margin-top: 50rpx;
   color: black;
-  border: 1px solid red;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
 }
 .loginDisplay .passwordInput.data-v-018cdf56 {
   width: 450rpx;
@@ -65,7 +78,10 @@
   box-sizing: border-box;
   margin: 40rpx auto;
   color: black;
-  border: 1px solid red;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
 }
 .loginDisplay .loginButton.data-v-018cdf56 {
   width: 450rpx;

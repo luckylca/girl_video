@@ -27,7 +27,7 @@ const _sfc_main = {
     const password = common_vendor.ref("");
     const name = common_vendor.ref("");
     function change() {
-      common_vendor.index.__f__("log", "at pages/setting/setting.vue:74", value.value);
+      common_vendor.index.__f__("log", "at pages/setting/setting.vue:77", value.value);
       common_vendor.index.setStorage({
         key: "line",
         data: value.value
@@ -54,40 +54,62 @@ const _sfc_main = {
     function loginDisplayDown() {
       isShow.value = false;
     }
+    function upLikeList(likeList, account2) {
+      common_vendor.index.request({
+        url: "http://60.204.248.38:1315/api/updateLikeList",
+        data: { List: likeList, account: account2 },
+        method: "POST"
+      });
+    }
     async function login() {
       if (account.value == "" || password.value == "") {
         common_vendor.index.showToast({ title: "请输入账号和密码", icon: "none", duration: 2e3 });
         return;
       }
-      common_vendor.index.showLoading({ title: "正在登录..." });
+      if (Object.keys(Store.userData).length > 0) {
+        await upLikeList(Store.likeList, Store.userData.account);
+        Store.updataUserData({});
+      }
       const data = await common_vendor.index.request({
-        url: "",
-        data: { account: account.value, password: password.value }
+        url: "http://60.204.248.38:1315/api/login",
+        data: { account: account.value, password: password.value },
+        method: "POST"
       });
-      common_vendor.index.hideLoading();
-      if (data.code == 500) {
+      common_vendor.index.__f__("log", "at pages/setting/setting.vue:137", data);
+      if (data.data.code == 500) {
         common_vendor.index.showToast({
           title: "登录成功",
           icon: "none",
           duration: 2e3
         });
-        name.value = data.name;
-        Store.updataLikeList(data.list);
+        isShow.value = false;
+        name.value = data.data.name;
+        userSrc.value = "http://q.qlogo.cn/headimg_dl?dst_uin=" + data.data.account + "&spec=640&img_type=jpg";
+        let userData = {
+          name: name.value,
+          account: data.data.account,
+          password: data.data.password,
+          src: userSrc.value
+        };
+        common_vendor.index.__f__("log", "at pages/setting/setting.vue:152", data.data);
+        Store.updataUserData(userData);
+        Store.updataLikeList(data.data.list);
       }
-      if (data.code == 302) {
+      if (data.data.code == 302) {
         common_vendor.index.showToast({
           title: "账号或者密码错误",
           icon: "none",
           duration: 2e3
         });
       }
-      if (data.code == 501) {
+      if (data.data.code == 501) {
         common_vendor.index.showToast({
           title: "已为你注册账号",
           icon: "none",
           duration: 2e3
         });
         name.value = data.name;
+        isShow.value = false;
         Store.updataLikeList(data.list);
       }
     }
@@ -104,7 +126,7 @@ const _sfc_main = {
         key: "autoplay",
         data: isChecked.value
       });
-      common_vendor.index.__f__("log", "at pages/setting/setting.vue:160", isChecked.value);
+      common_vendor.index.__f__("log", "at pages/setting/setting.vue:191", isChecked.value);
     }
     function openDrawer() {
       showRight.value.open();
@@ -121,30 +143,32 @@ const _sfc_main = {
         g: common_vendor.o(($event) => password.value = $event.detail.value),
         h: common_vendor.o(login)
       } : {}, {
-        i: userSrc.value,
-        j: name.value
+        i: isShow.value,
+        j: common_vendor.o(loginDisplayDown),
+        k: userSrc.value,
+        l: name.value
       }, name.value ? {
-        k: common_vendor.t(name.value)
+        m: common_vendor.t(name.value)
       } : {}, {
-        l: common_vendor.o(loginDisplayOpen),
-        m: isChecked.value,
-        n: common_vendor.o(($event) => onSwitchChange(_ctx.e)),
-        o: common_vendor.o(openDrawer),
-        p: common_vendor.o(likeListOpen),
-        q: common_vendor.o(downloadListOpen),
-        r: common_vendor.o(info),
-        s: common_vendor.o(change),
-        t: common_vendor.o(($event) => value.value = $event),
-        v: common_vendor.p({
+        n: common_vendor.o(loginDisplayOpen),
+        o: isChecked.value,
+        p: common_vendor.o(($event) => onSwitchChange(_ctx.e)),
+        q: common_vendor.o(openDrawer),
+        r: common_vendor.o(likeListOpen),
+        s: common_vendor.o(downloadListOpen),
+        t: common_vendor.o(info),
+        v: common_vendor.o(change),
+        w: common_vendor.o(($event) => value.value = $event),
+        x: common_vendor.p({
           mode: "list",
           localdata: date.value,
           multiple: false,
           modelValue: value.value
         }),
-        w: common_vendor.sr(showRight, "018cdf56-0", {
+        y: common_vendor.sr(showRight, "018cdf56-0", {
           "k": "showRight"
         }),
-        x: common_vendor.p({
+        z: common_vendor.p({
           mode: "right",
           width: 150
         })
