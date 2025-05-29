@@ -1,22 +1,26 @@
 <template>
 	<view class="page-container">
-		<view class="loginDisplay" id="loginDisplay" v-if="isShow">
-			<view class="down" style="right: 0px;position: fixed;font-size: 40rpx;" @click="loginDisplayDown">
-				❌
+		<!-- <uni-transition mode-class="fade" :show="isShow"> -->
+			<view class="loginDisplay" v-if="isShow" id="loginDisplay">
+				<view class="down" style="right: 0px;position: fixed;font-size: 40rpx;" @click="loginDisplayDown">
+					❌
+				</view>
+				<view class="avatar">
+					<image :src=loginSrc mode="" style="width: 100%;height: 100%;border-radius: 50%;"></image>
+				</view>
+				<input class="accountInput" type="text" placeholder="请输入QQ账号" maxlength="10" cursor-color="black" @input="onKeyInput" v-model="account"/>
+				<input class="passwordInput" password="true" placeholder="请输入密码" maxlength="14" cursor-color="black" v-model="password"/>
+				<button class="loginButton" @click="login">登录</button>
+				<view class="tip">
+					如果未注册则自动注册
+				</view>
 			</view>
-			<view class="avatar">
-				<image :src=loginSrc mode="" style="width: 100%;height: 100%;border-radius: 50%;"></image>
+		<!-- </uni-transition> -->
+		<!-- <uni-transition mode-class="fade" :show="isShow"> -->
+			<view class="black" v-show="isShow" @click="loginDisplayDown">
+				
 			</view>
-			<input class="accountInput" type="text" placeholder="请输入QQ账号" maxlength="10" cursor-color="black" @input="onKeyInput" v-model="account"/>
-			<input class="passwordInput" password="true" placeholder="请输入密码" maxlength="14" cursor-color="black" v-model="password"/>
-			<button class="loginButton" @click="login">登录</button>
-			<view class="tip">
-				如果未注册则自动注册
-			</view>
-		</view>
-		<view class="black" v-show="isShow" @click="loginDisplayDown">
-			
-		</view>
+		<!-- </uni-transition> -->
 		<view class="loginLayout" @click="loginDisplayOpen" >
 			<view class="avatar">
 				<image :src=userSrc mode="" style="width: 100%;height: 100%;border-radius: 50%;"></image>
@@ -66,8 +70,8 @@ const showRight = ref(null)
 const value = ref(0)
 const letter = ref("L")
 const date = ref([{"value": 0,"text": "小姐姐1"},{"value": 1,"text": "小姐姐2"},{"value": 2,"text": "女大学生"},{"value": 3,"text": "黑丝"},{"value": 4,"text": "cos"},{"value": 5,"text": "白丝"},{"value": 6,"text": "身材"},{"value": 7,"text": "蛇姐"},{"value": 8,"text": "吊带"},{"value": 9,"text": "玉足"},{"value": 10,"text": "汉服"},{"value": 11,"text": "清纯"},{"value": 12,"text": "萝莉"}])
-const userSrc = ref("https://tse4-mm.cn.bing.net/th/id/OIP-C.Nj6o69waOC3JTbebyCu-hgHaEc?cb=iwp2&rs=1&pid=ImgDetMain")
-const loginSrc = ref("https://tse4-mm.cn.bing.net/th/id/OIP-C.Nj6o69waOC3JTbebyCu-hgHaEc?cb=iwp2&rs=1&pid=ImgDetMain")
+const userSrc = ref("https://c-ssl.dtstatic.com/uploads/blog/202105/25/20210525121250_5e7ad.thumb.1000_0.jpg")
+const loginSrc = ref("https://c-ssl.dtstatic.com/uploads/blog/202105/25/20210525121250_5e7ad.thumb.1000_0.jpg")
 const Store = likeStore()
 const isShow = ref(false)
 const account = ref("")

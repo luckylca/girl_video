@@ -5,16 +5,16 @@
 		</view>
 		<view class="toolBar">
 			<view class="like" v-if="!islike">
-				<image src="/static/basic/收藏.png" style="width: 100%;height: 100%;" @click="like"></image>
+				<image src="/static/basic/like.png" style="width: 100%;height: 100%;" @click="like"></image>
 			</view>
 			<view class="likeed" v-else>
-				<image src="/static/basic/已收藏.png" style="width: 100%;height: 100%;" @click="like"></image>
+				<image src="/static/basic/likeed.png" style="width: 100%;height: 100%;" @click="like"></image>
 			</view>
 			<view class="text" :class="{ani:isAni}" id="text" @click="get_video">
 				下一个
 			</view>
 			<view class="download">
-				<image src="/static/basic/下载.png" style="width: 100%;height: 100%;" @click="downloadVideo"></image>
+				<image src="/static/basic/download.png" style="width: 100%;height: 100%;" @click="downloadVideo"></image>
 			</view>
 		</view>	
 	</view>

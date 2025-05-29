@@ -1,19 +1,18 @@
 <template>
 	<view class="layout">
 		<view class="videoList">
-<!-- 			<view class="ListItem" v-for="item in likeList" @click="enterVideo(item.id)" :key="item.id">
+			<view class="ListItem" v-for="item in likeList" @click="enterVideo(item.id)" :key="item.id">
+				<span>{{item.title}}</span>
+			</view>
+<!-- 			<view class="ListItem" :style="{ transform: 'translateX(' + (offsetmap[index] || 0) + 'px)' }" :class="{'change':ischange}" v-for="(item,index) in likeList" @touchstart="(e)=>ontouchstart(e,item.id)" @touchmove="(e)=>ontouchmove(e,item.id)" @touchend="(e)=>ontouchend(e,item.id)" :key="item.id">
 				<span>{{item.title}}</span>
 			</view> -->
-			<view class="ListItem" :class="{'change':ischange}" v-for="item in likeList" @touchstart="(e)=>ontouchstart(e,item.id)" @touchmove="(e)=>ontouchmove(e,item.id)" @touchend="(e)=>ontouchend(e,item.id)" :key="item.id">
-				<view :style="{ transform: 'translateX(' + offset + 'px)' }" style="width: 100%;height: 100%;display: flex;justify-content: center;align-items: center;">
-					<span>{{item.title}}</span>
-				</view>
-				
-			</view>
 		</view>
-		<view class="videoContiner" v-show="isVideoPlay">
-			<video :src=videoUrl style="width: 100%;height: 100%;" autoplay="true" @ended="end"></video>
-		</view>			
+		<!-- <uni-transition mode-class="fade" :show="isVideoPlay"> -->
+			<view class="videoContiner" v-show="isVideoPlay">
+				<video :src=videoUrl style="width: 100%;height: 100%;" autoplay="true" @ended="end"></video>
+			</view>	
+		<!-- </uni-transition>		 -->
 	</view>
 	<view class="black" v-show="isHover" @click="ended">
 		
@@ -31,32 +30,52 @@ const isVideoPlay = ref(false)
 const videoUrl = ref("")
 const ischange = ref(false)
 const offsetmap = ref([])
+let currentId = -1
+let touchStartPosition =0
+let touchMovingPosition = 0
 likeList.value = Store.likeList
-offsetmap.value = Array.from({ length: likeList.value.length }, (_, index) => ({
-  index,
-  offset: 0
-}));
+// offsetmap.value = Array.from({ length: likeList.value.length }, (_, index) => ({
+//   index,
+//   offset: 0
+// }));
+// console.log(offsetmap.value);
+const enterVideo = (id) =>{
+	isVideoPlay.value = true
+	videoUrl.value = likeList.value[id].url
+	isHover.value = true
+}
 
-// const enterVideo = (id) =>{
-// 	isVideoPlay.value = true
-// 	videoUrl.value = likeList.value[id].url
-// 	isHover.value = true
+// function ontouchstart(e,index)
+// {	
+// 	touchStartPosition = e.touches[0].screenX
+// 	currentId=index
+// 	console.log(e.touches[0].screenX);
 // }
 
-function ontouchstart(e,index)
-{
-	console.log(e.touches[0].screenX);
-}
+// function ontouchmove(e,index)
+// {	
+// 	if(index!=currentId)return
+// 	touchMovingPosition = e.changedTouches[0].screenX
+// 	const detTouch = touchStartPosition-touchMovingPosition
+// 	if(detTouch>0)
+// 	{offsetmap.value[index].offset = detTouch}
+// 	console.log(e.changedTouches[0].screenX);
+// }
 
-function ontouchmove(e,index)
-{
-	console.log(e.changedTouches[0].screenX);
-}
+// function ontouchend(e,index)
+// {	
+// 	  const threshold = -100
+// 	  if (offsetmap.value[index].offset < threshold) {
+// 	    // 完全滑出屏幕
+// 	    offsetmap.value[index].offset = -200
+// 	  } else {
+// 	    // 回弹
+// 	    offsetmap.value[index].offset = 0
+// 	  }
 
-function ontouchend(e,index)
-{
-	console.log(e.changedTouches[0].screenX);
-}
+// 	  currentId = -1
+// 	console.log(e.changedTouches[0].screenX);
+// }
 
 const ended = ()=>{
 	isVideoPlay.value = false

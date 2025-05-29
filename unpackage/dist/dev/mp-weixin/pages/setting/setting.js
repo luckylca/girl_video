@@ -19,15 +19,15 @@ const _sfc_main = {
     const value = common_vendor.ref(0);
     common_vendor.ref("L");
     const date = common_vendor.ref([{ "value": 0, "text": "小姐姐1" }, { "value": 1, "text": "小姐姐2" }, { "value": 2, "text": "女大学生" }, { "value": 3, "text": "黑丝" }, { "value": 4, "text": "cos" }, { "value": 5, "text": "白丝" }, { "value": 6, "text": "身材" }, { "value": 7, "text": "蛇姐" }, { "value": 8, "text": "吊带" }, { "value": 9, "text": "玉足" }, { "value": 10, "text": "汉服" }, { "value": 11, "text": "清纯" }, { "value": 12, "text": "萝莉" }]);
-    const userSrc = common_vendor.ref("https://tse4-mm.cn.bing.net/th/id/OIP-C.Nj6o69waOC3JTbebyCu-hgHaEc?cb=iwp2&rs=1&pid=ImgDetMain");
-    const loginSrc = common_vendor.ref("https://tse4-mm.cn.bing.net/th/id/OIP-C.Nj6o69waOC3JTbebyCu-hgHaEc?cb=iwp2&rs=1&pid=ImgDetMain");
+    const userSrc = common_vendor.ref("https://c-ssl.dtstatic.com/uploads/blog/202105/25/20210525121250_5e7ad.thumb.1000_0.jpg");
+    const loginSrc = common_vendor.ref("https://c-ssl.dtstatic.com/uploads/blog/202105/25/20210525121250_5e7ad.thumb.1000_0.jpg");
     const Store = store_like.likeStore();
     const isShow = common_vendor.ref(false);
     const account = common_vendor.ref("");
     const password = common_vendor.ref("");
     const name = common_vendor.ref("");
     function change() {
-      common_vendor.index.__f__("log", "at pages/setting/setting.vue:77", value.value);
+      common_vendor.index.__f__("log", "at pages/setting/setting.vue:81", value.value);
       common_vendor.index.setStorage({
         key: "line",
         data: value.value
@@ -75,7 +75,7 @@ const _sfc_main = {
         data: { account: account.value, password: password.value },
         method: "POST"
       });
-      common_vendor.index.__f__("log", "at pages/setting/setting.vue:137", data);
+      common_vendor.index.__f__("log", "at pages/setting/setting.vue:141", data);
       if (data.data.code == 500) {
         common_vendor.index.showToast({
           title: "登录成功",
@@ -91,7 +91,7 @@ const _sfc_main = {
           password: data.data.password,
           src: userSrc.value
         };
-        common_vendor.index.__f__("log", "at pages/setting/setting.vue:152", data.data);
+        common_vendor.index.__f__("log", "at pages/setting/setting.vue:156", data.data);
         Store.updataUserData(userData);
         Store.updataLikeList(data.data.list);
       }
@@ -126,7 +126,7 @@ const _sfc_main = {
         key: "autoplay",
         data: isChecked.value
       });
-      common_vendor.index.__f__("log", "at pages/setting/setting.vue:191", isChecked.value);
+      common_vendor.index.__f__("log", "at pages/setting/setting.vue:195", isChecked.value);
     }
     function openDrawer() {
       showRight.value.open();

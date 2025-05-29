@@ -5,9 +5,11 @@
 				<span>{{downloadTitleList[index]}}</span>
 			</view>
 		</view>
-		<view class="videoContiner" v-show="isVideoPlay">
-			<video :src=videoUrl style="width: 100%;height: 100%;" autoplay="true" @ended="end"></video>
-		</view>			
+		<!-- <uni-transition mode-class="fade" :show="isVideoPlay"> -->
+			<view class="videoContiner" v-show="isVideoPlay">
+				<video :src=videoUrl style="width: 100%;height: 100%;" autoplay="true" @ended="end"></video>
+			</view>	
+		<!-- </uni-transition>		 -->
 	</view>
 	<view class="black" v-show="isHover" @click="ended">
 		
