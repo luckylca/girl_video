@@ -3,143 +3,166 @@
 ![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)
 ![Platform](https://img.shields.io/badge/Platform-iOS%20%7C%20Android%20%7C%20H5-green.svg)
 ![uni-app](https://img.shields.io/badge/Framework-uni--app-brightgreen.svg)
+![License](https://img.shields.io/badge/License-MIT-orange.svg)
 
+<div align="center">
+  <img src="./asset/微信图片_20250529232814.jpg" width="250" alt="应用封面" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+</div>
 
 ## ✨ 项目简介
 
-**Girl Video** 是一个精心设计的前端练手项目，基于 uni-app 框架开发的跨平台移动应用，专注于提供流畅的美女视频浏览体验。该项目展示了现代前端开发技术和响应式设计的应用。
+**Girl Video** 是一个精心设计的前端练手项目，基于 uni-app 框架开发的跨平台移动应用，专注于提供流畅的美女视频浏览体验。该项目展示了现代前端开发技术和响应式设计的实践应用。
 
-## 🚀 特色功能
+## 🚀 核心功能
 
-- 📱 **跨平台兼容** - 一套代码，多端运行（iOS、Android、H5）
-- 🎞️ **智能视频播放** - 流畅的视频浏览和播放体验
-- 🔍 **分类导航系统** - 便捷查找不同类型的内容
-- ⚙️ **个性化设置** - 自定义您的使用体验
+| 功能 | 描述 |
+|------|------|
+| 📱 **跨平台兼容** | 一套代码，多端运行（iOS、Android、H5） |
+| 🎞️ **智能视频播放** | 流畅的视频浏览和自动播放功能 |
+| ❤️ **收藏系统** | 一键收藏喜欢的视频内容 |
+| 💾 **下载管理** | 支持视频本地下载和管理 |
+| 🔍 **分类导航** | 多种视频分类，便捷查找不同类型内容 |
+| ⚙️ **个性化设置** | 自定义播放设置和应用主题 |
+| 👤 **用户账户** | 支持账户登录和数据同步 |
 
 ## 🛠️ 技术栈
 
 <table>
   <tr>
-    <td align="center"><img src="https://img.icons8.com/color/48/000000/vue-js.png"/><br>Vue.js</td>
+    <td align="center"><img src="https://img.icons8.com/color/48/000000/vue-js.png"/><br>Vue 3</td>
     <td align="center"><img src="https://img.icons8.com/color/48/000000/css3.png"/><br>SCSS</td>
     <td align="center"><img src="https://img.icons8.com/color/48/000000/javascript.png"/><br>JavaScript</td>
     <td align="center"><img src="https://img.icons8.com/color/48/000000/api-settings.png"/><br>uni-app</td>
   </tr>
 </table>
 
-- [**uni-app**](https://uniapp.dcloud.io/) - 跨平台前端应用框架
-- **Vue.js** - 渐进式 JavaScript 框架
+- **Vue 3 + Composition API** - 现代化的响应式框架
+- **uni-app** - 跨平台前端应用框架
+- **Pinia** - 下一代Vue状态管理库
 - **Sass/SCSS** - CSS预处理器
-- [**uni-ui**](https://uniapp.dcloud.io/component/uniui/uni-ui.html) - uni-app生态的UI组件库
+- **uni-ui** - uni-app生态的UI组件库
 
 ## 📂 项目结构
 
-```
+```bash
 girl_video/
 ├── 📁 components/          # 自定义组件
-│   ├── basic/              # 基础组件
-│   └── basicnext/          # 扩展基础组件
-├── 📁 pages/               # 页面文件
+│   ├── basic/              # 基础视频播放组件
+│   └── basicnext/          # 扩展组件
+├── 📁 pages/               # 应用页面
 │   ├── index/              # 首页
-│   ├── info/               # 信息页
-│   └── setting/            # 设置页
+│   ├── list/               # 视频列表页
+│   ├── info/               # 应用信息页
+│   ├── setting/            # 设置页
+│   └── downloadList/       # 下载管理页
 ├── 📁 static/              # 静态资源
-│   ├── background.jpg      # 背景图
-│   ├── card.jpg            # 卡片图
-│   └── tabbar_ico/         # 底部导航栏图标
-├── 📁 uni_modules/         # uni扩展组件
-│   ├── uni-card/           # 卡片组件
-│   ├── uni-data-checkbox/  # 数据驱动的单选复选框
-│   ├── uni-drawer/         # 抽屉组件
-│   ├── uni-icons/          # 图标组件
-│   ├── uni-load-more/      # 加载更多组件
-│   └── uni-scss/           # 全局样式库
+├── 📁 store/               # 状态管理
+├── 📁 uni_modules/         # uni-app扩展组件
 ├── 📄 App.vue              # 应用入口组件
 ├── 📄 main.js              # 应用入口文件
-├── 📄 manifest.json        # 应用配置文件
-├── 📄 pages.json           # 页面路由配置
-├── 📄 uni.scss             # 全局样式变量
-└── 📄 README.md            # 项目说明文档
+└── 📄 manifest.json        # 应用配置文件
 ```
 
-## ⚙️ 安装和使用
+## ⚙️ 安装和运行
 
 ### 环境要求
 
 | 工具 | 版本 | 说明 |
 |------|------|------|
-| [HBuilderX](https://www.dcloud.io/hbuilderx.html) | 最新版 | 官方推荐IDE |
-| Node.js | ≥ 12.0 | JavaScript运行环境 |
+| [HBuilderX](https://www.dcloud.io/hbuilderx.html) | 3.6.0+ | 推荐的开发IDE |
+| Node.js | ≥ 14.0 | JavaScript运行环境 |
+| npm/yarn | 最新版 | 包管理工具 |
 
-### 安装步骤
+### 快速开始
 
-<details>
-<summary>📥 <b>点击展开安装步骤</b></summary>
+```bash
+# 克隆项目
+git clone https://github.com/your-username/girl_video.git
 
-1. **克隆项目**
-   ```bash
-   git clone https://github.com/your-username/girl_video.git
-   cd girl_video
-   ```
+# 进入项目目录
+cd girl_video
 
-2. **使用HBuilderX打开项目文件夹**
+# 安装依赖
+npm install
+# 或使用yarn
+yarn
 
-3. **安装依赖**
-   ```bash
-   npm install
-   ```
+# 运行开发服务器
+# 方法1: 使用HBuilderX运行到浏览器/模拟器
+# 方法2: 命令行运行
+npm run dev:h5
+```
 
-4. **运行项目**
-   - 在HBuilderX中点击"运行"到浏览器或模拟器
-   - 或使用命令行：`npm run dev`
-</details>
+### 构建与发布
 
-### 🏗️ 打包发布
+```bash
+# 打包H5版本
+npm run build:h5
 
-使用HBuilderX的"发行"功能，可一键打包为:
-- 📱 Android APK
-- 📱 iOS IPA 
-- 📱 各端小程序
+# 打包App
+# 推荐使用HBuilderX的云打包功能
+```
 
-## 🧩 组件使用
+## 🧩 核心组件
 
-项目集成了丰富的uni-ui组件，为开发提供便利：
+项目中使用的主要组件及其功能:
 
-| 组件 | 用途 | 文档链接 |
-|------|------|---------|
-| uni-card | 卡片式布局 | [文档](https://uniapp.dcloud.io/component/uniui/uni-card) |
-| uni-icons | 图标库 | [文档](https://uniapp.dcloud.io/component/uniui/uni-icons) |
-| uni-drawer | 侧滑菜单 | [文档](https://uniapp.dcloud.io/component/uniui/uni-drawer) |
-| uni-load-more | 加载更多 | [文档](https://uniapp.dcloud.io/component/uniui/uni-load-more) |
-| uni-data-checkbox | 数据驱动选择框 | [文档](https://uniapp.dcloud.io/component/uniui/uni-data-checkbox) |
+| 组件名称 | 路径 | 功能描述 |
+|---------|------|---------|
+| basic | basic.vue | 核心视频播放组件，支持播放、收藏和下载 |
+| setting | setting.vue | 用户设置和账户管理页面 |
+| downloadList | downloadList.vue | 下载内容管理页面 |
 
 ## 📱 应用截图
 
 <div align="center">
   <table>
     <tr>
-      <td align="center"><img src="./asset/Screenshot_2025-05-21-11-34-23-052_uni.luckygirls.jpg" width="200" alt="首页"/><br>首页</td>
-      <td align="center"><img src="./asset/Screenshot_2025-05-21-11-45-56-739_uni.luckygirls.jpg" width="200" alt="分类页"/><br>分类页</td>
+      <td align="center"><img src="./asset/微信图片_20250529232814.jpg" width="200" alt="首页"/><br>首页视图</td>
+      <td align="center"><img src="./asset/微信图片_20250529232818.jpg" width="200" alt="分类页"/><br>分类浏览</td>
+    </tr>
+    <tr>
+      <td align="center" colspan="2"><b>🔍 更多界面预览请安装体验</b></td>
     </tr>
   </table>
 </div>
 
-## 📚 学习资源
+## 🔮 项目特点
+
+- **响应式设计** - 完美适配各种屏幕尺寸
+- **流畅动画** - 精心设计的过渡效果
+- **离线功能** - 支持视频缓存和离线观看
+- **性能优化** - 针对移动设备的性能优化
+- **主题定制** - 支持浅色/深色主题切换
+
+## 📚 开发资源
 
 - [uni-app官方文档](https://uniapp.dcloud.io/component/)
-- [Vue.js文档](https://cn.vuejs.org/)
+- [Vue 3文档](https://cn.vuejs.org/)
 - [uni-app项目实战视频教程](https://www.bilibili.com/video/BV1BJ411W7pX)
+- [Composition API指南](https://v3.cn.vuejs.org/guide/composition-api-introduction.html)
 
-## 👨‍💻 贡献指南
+## 🤝 参与贡献
 
-欢迎提交PR或Issue来完善项目！详细贡献指南请参考 CONTRIBUTING.md。
+1. Fork 此仓库
+2. 创建你的特性分支 (`git checkout -b feature/amazing-feature`)
+3. 提交你的改动 (`git commit -m 'Add some amazing feature'`)
+4. 推送到分支 (`git push origin feature/amazing-feature`)
+5. 开启一个 Pull Request
 
-## 👤 作者
+## 🐛 问题反馈
+
+如果你发现任何问题或有改进建议，请[提交issue](https://github.com/your-username/girl_video/issues)或联系开发者。
+
+## 👤 开发者
 
 <table>
   <tr>
     <td align="center">
+      <a href="https://github.com/luckylca">
+        <br>
         <sub><b>Lucky</b></sub>
+      </a>
     </td>
   </tr>
 </table>
