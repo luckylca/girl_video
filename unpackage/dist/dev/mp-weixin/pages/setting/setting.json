@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "设置",
-  "usingComponents": {
-    "uni-data-checkbox": "../../uni_modules/uni-data-checkbox/components/uni-data-checkbox/uni-data-checkbox",
-    "uni-drawer": "../../uni_modules/uni-drawer/components/uni-drawer/uni-drawer"
-  }
-}

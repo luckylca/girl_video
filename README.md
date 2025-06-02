@@ -141,7 +141,14 @@ npm run build:h5
 - [Vue 3文档](https://cn.vuejs.org/)
 - [uni-app项目实战视频教程](https://www.bilibili.com/video/BV1BJ411W7pX)
 - [Composition API指南](https://v3.cn.vuejs.org/guide/composition-api-introduction.html)
-
+- 使用到的uniapp组件
+  - uni-card
+  - uni-data-checkbox
+  - uni-drawer
+  - uni-icons
+  - uni-load-more
+  - uni-scss
+  - uni-transition(这个在小程序端可以使用，但是不支持安卓端)
 ## 🤝 参与贡献
 
 1. Fork 此仓库
