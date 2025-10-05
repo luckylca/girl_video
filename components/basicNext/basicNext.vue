@@ -64,52 +64,32 @@ const urls = [
 const nextIndex = ref(0)
 const currentIndex = ref(0)
 const isLock = ref(false)
-function upOrDown(nextIndex,currentIndex)
+function upOrDown(newIdx,oldIdx)
 {
-	if(nextIndex==(currentIndex+1)%3) 
-		return 1
-	if(nextIndex==(currentIndex+2)%3) 
-		return 0
+		const diff = (newIdx - oldIdx + 3) % 3
+		if (diff === 1) return 1
+		if (diff === 2) return 0
+		return -1
 }
 function changeSwiper(res)
 {
 	nextIndex.value = res.detail.current
-	console.log(currentVideoIndex.value);
-	const dir = upOrDown(nextIndex.value,currentIndex.value)
-	console.log(dir);
 	if(isLock.value)
 	{
 		isLock.value=false
+		currentIndex.value = nextIndex.value
 		return
 	}
+	const dir = upOrDown(nextIndex.value,currentIndex.value)
 	if(dir==0&&currentVideoIndex.value==0)
 	{
 		isLock.value = true
-		// console.log(nextIndex.value);
 		controlIndex.value = 2
 		duration.value = 0
 		nextTick(()=>{
-			duration.value = 300
 			controlIndex.value = 0
+			duration.value = 300
 		})
-		// if(nextIndex.value==1)
-		// {
-		// 	videoIndex0.value = currentVideoIndex.value-1
-		// 	videoIndex1.value = currentVideoIndex.value
-		// 	videoIndex2.value = currentVideoIndex.value+1
-		// }
-		// else if(nextIndex.value==0)
-		// {
-		// 	videoIndex0.value = currentVideoIndex.value
-		// 	videoIndex1.value = currentVideoIndex.value+1
-		// 	videoIndex2.value = currentVideoIndex.value-1
-		// }
-		// else if(nextIndex.value==2)
-		// {
-		// 	videoIndex0.value = currentVideoIndex.value+1
-		// 	videoIndex1.value = currentVideoIndex.value-1
-		// 	videoIndex2.value = currentVideoIndex.value
-		// }
 		uni.showToast({
 				title:"已是最顶部"
 			})
@@ -118,9 +98,11 @@ function changeSwiper(res)
 	get_video(1)
 	if(dir==1)
 		currentVideoIndex.value++
-	else
+	else if(dir==0)
+	{
+		if(currentVideoIndex.value<0)	currentVideoIndex.value=0
 		currentVideoIndex.value--
-	controlIndex.value = nextIndex.value
+	}
 	if(nextIndex.value==1)
 	{
 		videoIndex0.value = currentVideoIndex.value-1
