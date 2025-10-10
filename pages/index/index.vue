@@ -9,7 +9,7 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
 import basic from '../../components/basicNext/basicNext.vue'
-
+// import basic from '../../components/basic/basic.vue'
 
 onBeforeMount(()=>{
 	uni.setStorage({
