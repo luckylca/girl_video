@@ -49,12 +49,10 @@
 	    "borderStyle": "black", // 上边框颜色
 	    "list": [{
 	      "pagePath": "pages/index/index",
-	      "text": "首页",
 	      "iconPath": "/static/tabbar_ico/home.png", // 默认图标路径
 	      "selectedIconPath": "/static/tabbar_ico/homec.png" // 选中时图标路径
 	    }, {
 	      "pagePath": "pages/setting/setting",
-	      "text": "设置",
 	      "iconPath": "/static/tabbar_ico/settingc.png", // 默认图标路径
 	      "selectedIconPath": "/static/tabbar_ico/setting.png" // 选中时图标路径
 	    }]

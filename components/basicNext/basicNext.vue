@@ -20,6 +20,7 @@
             style="height:100%;width:100vw"
             id="video0"
 			autoplay="true"
+			@ended="end"
           ></video>
         </view>
       </swiper-item>
@@ -33,6 +34,7 @@
             style="height:100%;width:100vw"
             id="video1"
 			autoplay="true"
+			@ended="end"
           ></video>
         </view>
       </swiper-item>
@@ -46,10 +48,25 @@
             style="height:100%;width:100vw"
             id="video2"
 			autoplay="true"
+			@ended="end"
           ></video>
         </view>
       </swiper-item>
     </swiper>
+  </view>
+  <view class="toolbar">
+  	<view class="box">
+		<image src="/static/basic/like.png" style="width: 100%;height: 100%;border-radius: 50%;"></image>
+  	</view>
+	<view class="box">
+		<image src="/static/basic/download.png" style="width: 100%;height: 100%;border-radius: 50%;"></image>
+	</view>
+	<view class="box">
+		<image src="/static/basic/share.png" style="width: 70%;height: 70%;border-radius: 50%;"></image>
+	</view>
+  </view>
+  <view class="touchGet" style="width: 100wh; height: 100vh; border: 1rpx red solid; z-index: 999;">
+  	
   </view>
 </template>
 
@@ -75,10 +92,10 @@ const lockNext = ref(false)
 
 /* 动画时长 */
 const duration = ref(300)
-
+const loading = ref(false)
 /* 你的视频列表 */
 const nowVideoList = ref([
-  { url: 'https://cdn.fs.ink/mp4/video_2023/mxuMvEom6CuE2VOlN7j9.mp4', title: '' }
+  { url: '', title: '' }
 ])
 
 /* 请求相关 */
@@ -104,7 +121,7 @@ const urls = [
 ]
 
 /* 简易防并发 */
-const loading = ref(false)
+const autoChange = ref(false)
 
 /* 安全访问列表避免 undefined */
 function safeGet(i){
@@ -138,7 +155,6 @@ function changeSwiper(e){
 
   // 计算方向（用户手势）
   const dir = getDir(nextIndex.value, currentIndex.value)
-
   // 顶部回弹条件：尝试向上翻（dir==0）且逻辑索引已经是 0
   if (dir === 0 && currentVideoIndex.value === 0){
     // 双跳策略：当前已经 0->2 的第一跳，这里执行 2->0 的安排
@@ -183,20 +199,6 @@ function changeSwiper(e){
 
 /* 拆出映射逻辑，保持你原有的三种分支 */
 function syncVideoIndex(swiperIdx){
-  // 逻辑：三个 item 里哪一个代表 currentVideoIndex 取决于当前 current
-  // if (swiperIdx === 1){
-  //   videoIndex0.value = currentVideoIndex.value - 1
-  //   videoIndex1.value = currentVideoIndex.value
-  //   videoIndex2.value = currentVideoIndex.value + 1
-  // } else if (swiperIdx === 0){
-  //   videoIndex0.value = currentVideoIndex.value
-  //   videoIndex1.value = currentVideoIndex.value + 1
-  //   videoIndex2.value = currentVideoIndex.value - 1
-  // } else { // 2
-  //   videoIndex0.value = currentVideoIndex.value + 1
-  //   videoIndex1.value = currentVideoIndex.value - 1
-  //   videoIndex2.value = currentVideoIndex.value
-  // }
   if (swiperIdx === 1){
     videoIndex0.value = -1
     videoIndex1.value = currentVideoIndex.value
@@ -219,11 +221,8 @@ async function get_video(num){
   loading.value = true
   try {
     isLike.value = false
-    isAutoPlay.value = await uni.getStorageSync('autoplay')
-    // 按你原来的写死 index=13（建议后期改成存储值）
     index = await uni.getStorageSync('line')
     index = 13
-
     while (num-- > 0){
       try {
         const res = await uni.request({ url: urls[index] })
@@ -245,25 +244,61 @@ async function get_video(num){
     loading.value = false
   }
 }
-
+async function end()
+{
+	isAutoPlay.value = await uni.getStorageSync('autoplay')
+	if(isAutoPlay.value)
+	{
+		lockNext.value = true    
+		autoChange.value = true
+		controlIndex.value = currentIndex.value
+		currentVideoIndex.value++
+		syncVideoIndex((currentIndex.value+1)%3)
+		nextTick(()=>{
+		  controlIndex.value = (currentIndex.value+1)%3
+		})
+		get_video(1)
+	}
+	else
+		return
+}
 /* 初始化：至少先拉 2 条再允许用户滑动（你原来是 3，可根据需要） */
 onMounted(async ()=>{
   await get_video(3)
   await nextTick()
   // 初始同步一次索引映射（避免越界）
   syncVideoIndex(controlIndex.value)
-  // video0.value = uni.createVideoContext('video0')
-  // video1.value = uni.createVideoContext('video1')
-  // video2.value = uni.createVideoContext('video2')
+
   
 })
 
 </script>
 
-<style>
+<style scoped>
 .layout{
   width:100vw;
   height:100vh;
+}
+.toolbar{
+	width: 120rpx;
+	height: 400rpx;
+	position: fixed;
+	border-radius: 200rpx;
+	z-index: 1000;
+	top: 700rpx;
+	right: 10rpx;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	background-color: white
+}
+.box{
+	width: 120rpx;
+	height: 120rpx;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 swiper{
   width:100vw;
@@ -273,10 +308,5 @@ swiper{
   width:100%;
   height:100%;
   background:#000;
-}
-.toolbar{
-  position:fixed;
-  right:10rpx;
-  bottom:100rpx;
 }
 </style>
