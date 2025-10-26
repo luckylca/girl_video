@@ -16,9 +16,11 @@ export const likeStore = defineStore('like', () => {
   const addDownloadTitleList = (title) => {
     downloadTitleList.value = [...downloadTitleList.value, title]
   }
-  // 移除最后一个收藏项
-  const removeLikeList = () => {
-    likeList.value = likeList.value.slice(0, -1)
+  const removeLikeList = (url) => {
+    likeList.value = likeList.value.filter(item => !(item.url === url));
+  }
+  const findLikeList = (url) => {
+	  return likeList.value.some(item => item.url === url); 
   }
 	const updataLikeList = (list)=>{
 		likeList.value = list
@@ -48,5 +50,5 @@ export const likeStore = defineStore('like', () => {
     },
     { deep: true }
   )
-  return { likeList, addLikeList, removeLikeList,updataLikeList,downloadTitleList,updataUserData,addDownloadTitleList,userData }
+  return { likeList, addLikeList, removeLikeList,updataLikeList,downloadTitleList,updataUserData,addDownloadTitleList,userData,findLikeList }
 })
