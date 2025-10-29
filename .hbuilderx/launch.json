@@ -6,7 +6,9 @@
             "type" : "uni-app:app-ios"
         },
         {
+            "customPlaygroundType" : "device",
             "openVueDevtools" : true,
+            "playground" : "standard",
             "type" : "uni-app:app-android"
         }
     ]
