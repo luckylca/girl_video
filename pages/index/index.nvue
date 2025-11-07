@@ -6,7 +6,9 @@
 			<swiper-item>
 				<view class="videoPlayer">
 					<video referrer-policy="no-referrer" :src="safeGet(videoIndex0)?.url || ''"
-						class="video" id="video0" autoplay="true" @ended="end" v-if="safeGet(videoIndex0)?.url"></video>
+						class="video" id="video0" autoplay="true" @ended="end" v-if="safeGet(videoIndex0)?.url"></video>					
+<!-- 					<video referrer-policy="no-referrer" src="https://www.douyin.com/aweme/v1/play/?video_id=v0300fg10000d1v114fog65hu8tatcb0&line=0&file_id=137127a480a64d448ef01e2f7a8efb63&sign=afa22df38c8b6e02d92c84ec69ee0c04&is_play_url=1&source=PackSourceEnum_PUBLISH"
+						class="video" id="video0" autoplay="true" @ended="end"></video> -->
 					<view class="getTouch" @click="clickGet" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd"></view>
 				</view>
 			</swiper-item>
@@ -50,7 +52,7 @@
 <script setup>
 import { ref, nextTick, onMounted,onBeforeMount } from 'vue'
 import { likeStore } from '../../store/like';
-
+import { videoListStore } from '../../store/videoList';
 /* 状态变量 */
 const isLike = ref(false)
 const isAutoPlay = ref(false)
@@ -73,7 +75,7 @@ const lockNext = ref(false)
 const duration = ref(300)
 const loading = ref(false)
 /* 你的视频列表 */
-const nowVideoList = ref([])
+// const nowVideoList = ref([])
 
 /* 请求相关 */
 const url = ref('')
@@ -97,22 +99,24 @@ const urls = [
 	'https://api.dwo.cc/api/miss?type=json'
 ]
 let lastDate = 0
-const Store = likeStore()
+const useLikeStore = likeStore()
+const useVideoListStore = videoListStore()
 /* 简易防并发 */
 const autoChange = ref(false)
 
 /* 安全访问列表避免 undefined */
 let isClick = 0
 function safeGet(i) {
+	const list = useVideoListStore.videoList
 	if (i == null) return null
 	if (i < 0) return null
-	if (i >= nowVideoList.value.length) return null
-	return nowVideoList.value[i]
+	if (i >= list.length) return null
+	return list[i]
 }
 function clickGet(){
 	const nowDate = Date.now()
 	if(nowDate-lastDate<200){
-		if(Store.findLikeList(nowVideoList.value[currentVideoIndex.value].url)){
+		if(useLikeStore.findLikeList(useVideoListStore.videoList[currentVideoIndex.value].url)){
 			isAni.value = true
 			setTimeout(()=>{
 				isAni.value = false
@@ -167,7 +171,7 @@ function touchEnd(e) {
 			controlIndex.value = (currentIndex.value + 2) % 3
 		})
 	}
-	if(Store.findLikeList(nowVideoList.value[currentVideoIndex.value].url)){
+	if(useLikeStore.findLikeList(useVideoListStore.videoList[currentVideoIndex.value].url)){
 		isLike.value = true
 	}
 	else{
@@ -217,7 +221,7 @@ function changeSwiper(e) {
 		currentIndex.value = cur
 		return
 	}
-	if(Store.findLikeList(nowVideoList.value[currentVideoIndex.value].url)){
+	if(useLikeStore.findLikeList(useVideoListStore.videoList[currentVideoIndex.value].url)){
 		isLike.value = true
 	}
 	else{
@@ -247,7 +251,7 @@ function like(){
 	isLike.value = !isLike.value
 	if(isLike.value)
 	{	
-		if(Object.keys(Store.userData).length === 0)
+		if(Object.keys(useLikeStore.userData).length === 0)
 		{
 			uni.showToast({
 				title:"你还没有登录，数据将保存在本地",
@@ -260,20 +264,20 @@ function like(){
 			url:"",
 			title:""
 		}
-		tempLikeItem.id = Store.likeList.length
-		tempLikeItem.url = nowVideoList.value[currentVideoIndex.value].url
-		tempLikeItem.title = nowVideoList.value[currentVideoIndex.value].title
-		Store.addLikeList(tempLikeItem)
+		tempLikeItem.id = useLikeStore.likeList.length
+		tempLikeItem.url = useVideoListStore.videoList[currentVideoIndex.value].url
+		tempLikeItem.title = useVideoListStore.videoList[currentVideoIndex.value].title
+		useLikeStore.addLikeList(tempLikeItem)
 	}
 	else
 	{
-		Store.removeLikeList(nowVideoList.value[currentVideoIndex.value].url)
+		useLikeStore.removeLikeList(useVideoListStore.videoList[currentVideoIndex.value].url)
 	}
-	console.log(Store.likeList);
+	console.log(useLikeStore.likeList);
 }
 function share(){
 	uni.setClipboardData({
-		data: nowVideoList.value[currentVideoIndex.value].url,
+		data: useVideoListStore.videoList[currentVideoIndex.value].url,
 		success: function () {
 			uni.hideToast()
 			uni.showToast({
@@ -301,10 +305,16 @@ async function get_video(num) {
 				if (!url.value) {
 					continue
 				}
-				nowVideoList.value.push({
-					url: url.value,
-					title: title.value
-				})
+				// nowVideoList.value.push({
+				// 	url: url.value,
+				// 	title: title.value
+				// })
+				useVideoListStore.addVideoItem(
+					{
+						url: url.value,
+						title: title.value
+					}
+				)
 			} catch (err) {
 				console.log('请求失败', err)
 			}
@@ -350,7 +360,7 @@ onBeforeMount(async ()=>{
 </script>
 
 <style scoped>
-.layout {
+/* .layout {
 	flex: 1;
 	z-index: 998;
 }
@@ -401,9 +411,9 @@ onBeforeMount(async ()=>{
 	transition-duration:1.3s;
 	transition-delay:0.1s;
 	transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1.0);
-}
+} */
 
-/* @keyframes anima
+@keyframes anima
 {
 	0%{transform: scale(1);}
 	25%{transform: scale(0.9);}
@@ -453,10 +463,14 @@ swiper {
 	height: 100%;
 	background: #000;
 }
+.video {
+	width: 100%;
+	height: 100%;
+}
 .getTouch {
 	position: fixed;
 	width: 100%;
 	height: 100%;
 	z-index: 999;
-} */
+}
 </style>

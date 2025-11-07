@@ -46,6 +46,9 @@
 			<view class="box" @click="downloadListOpen">
 				下载列表
 			</view>
+			<view class="box" @click="douyinSetOpen">
+				导入抖音视频
+			</view>
 			<view class="box" @click="info">
 				关于app
 			</view>
@@ -101,6 +104,12 @@ function downloadListOpen()
 	uni.navigateTo({
 		url: '../downloadList/downloadList',
 	});
+}
+function douyinSetOpen()
+{
+	uni.navigateTo({
+		url: '../douyinSet/douyinSet',
+	});	
 }
 function loginDisplayOpen(){
 	isShow.value = true

@@ -33,6 +33,13 @@
 			{
 				"navigationBarTitleText" : "下载列表"
 			}
+		},
+		{
+			"path" : "pages/douyinSet/douyinSet",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
 		}
 	],
 	"globalStyle": {
