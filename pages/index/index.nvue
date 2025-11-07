@@ -73,9 +73,7 @@ const lockNext = ref(false)
 const duration = ref(300)
 const loading = ref(false)
 /* 你的视频列表 */
-const nowVideoList = ref([
-	{ url: '', title: '' }
-])
+const nowVideoList = ref([])
 
 /* 请求相关 */
 const url = ref('')
@@ -132,15 +130,16 @@ const touchEndData = ref()
 const touchMoveNowData = ref()
 const touchMoveLastData = ref()
 const touchMoveFirstData = ref()
+const touchMoveProhibit = ref()
 function touchStart(e) {
-	touchStartData.value = e.changedTouches[0].clientY
+	touchStartData.value = e.changedTouches[0].screenY
 	console.log(touchStartData.value);
 }
 function touchMove(e) {
 	// console.log(e);
 }
 function touchEnd(e) {
-	touchEndData.value = e.changedTouches[0].clientY
+	touchEndData.value = e.changedTouches[0].screenY
 	console.log(touchEndData.value);
 	if(touchEndData.value-touchStartData.value<=-20) {
 		lockNext.value = true
@@ -155,13 +154,17 @@ function touchEnd(e) {
 		
 	}
 	else if(touchEndData.value-touchStartData.value>=20) {
+		if(currentVideoIndex.value==0) {
+			uni.showToast({ title: '已是最顶部', icon: 'none' })
+			return
+		}
+		currentVideoIndex.value--
 		lockNext.value = true
 		autoChange.value = true
 		controlIndex.value = currentIndex.value
-		currentVideoIndex.value--
-		syncVideoIndex((currentIndex.value - 1) % 3)
+		syncVideoIndex((currentIndex.value + 2) % 3)
 		nextTick(() => {
-			controlIndex.value = (currentIndex.value - 1) % 3
+			controlIndex.value = (currentIndex.value + 2) % 3
 		})
 	}
 	if(Store.findLikeList(nowVideoList.value[currentVideoIndex.value].url)){
@@ -329,13 +332,10 @@ async function end() {
 }
 /* 初始化：至少先拉 2 条再允许用户滑动（你原来是 3，可根据需要） */
 onMounted(async () => {
-	await get_video(3)
-	await nextTick()
-	// 初始同步一次索引映射（避免越界）
 	syncVideoIndex(controlIndex.value)
 })
 
-onBeforeMount(()=>{
+onBeforeMount(async ()=>{
     uni.setStorage({
         key:"autoplay",
         data:false
@@ -344,11 +344,13 @@ onBeforeMount(()=>{
         key:"line",
         data:0
     })
+	await get_video(3)
+	await nextTick()
 })
 </script>
 
 <style scoped>
-/* .layout {
+.layout {
 	flex: 1;
 	z-index: 998;
 }
@@ -399,8 +401,9 @@ onBeforeMount(()=>{
 	transition-duration:1.3s;
 	transition-delay:0.1s;
 	transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1.0);
-} */
-@keyframes anima
+}
+
+/* @keyframes anima
 {
 	0%{transform: scale(1);}
 	25%{transform: scale(0.9);}
@@ -455,5 +458,5 @@ swiper {
 	width: 100%;
 	height: 100%;
 	z-index: 999;
-}
+} */
 </style>
