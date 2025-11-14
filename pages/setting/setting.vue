@@ -57,7 +57,7 @@
 			<uni-drawer ref="showRight" mode="right" :width="150">
 			  <view class="drawer-content">
 				  <view class="checkbox">
-					<uni-data-checkbox class="checkbox" mode="list" v-model="value" :localdata="date" :multiple="false" @change="change"></uni-data-checkbox>
+					<uni-data-checkbox class="checkbox" mode="list" v-model="value" :localdata="drawerContentdate" :multiple="false" @change="change"></uni-data-checkbox>
 				  </view>
 			  </view>
 			</uni-drawer>
@@ -67,15 +67,17 @@
 
 <script setup>
 import { likeStore } from "../../store/like"
+import { videoListStore } from "../../store/videoList"
 import {ref} from "vue"
 const isChecked = ref(false)
 const showRight = ref(null)
 const value = ref(0)
 const letter = ref("L")
-const date = ref([{"value": 0,"text": "小姐姐1"},{"value": 1,"text": "小姐姐2"},{"value": 2,"text": "女大学生"},{"value": 3,"text": "黑丝"},{"value": 4,"text": "cos"},{"value": 5,"text": "白丝"},{"value": 6,"text": "身材"},{"value": 7,"text": "蛇姐"},{"value": 8,"text": "吊带"},{"value": 9,"text": "玉足"},{"value": 10,"text": "汉服"},{"value": 11,"text": "清纯"},{"value": 12,"text": "萝莉"}])
 const userSrc = ref("https://c-ssl.dtstatic.com/uploads/blog/202105/25/20210525121250_5e7ad.thumb.1000_0.jpg")
 const loginSrc = ref("https://c-ssl.dtstatic.com/uploads/blog/202105/25/20210525121250_5e7ad.thumb.1000_0.jpg")
-const Store = likeStore()
+const useLikeStore = likeStore()
+const useVideoListStore = videoListStore()
+const drawerContentdate = useVideoListStore.drawContent
 const isShow = ref(false)
 const account = ref("")
 const password = ref("")
@@ -135,10 +137,10 @@ async function login()
 	}
 	
 	// uni.showLoading({ title: '正在登录...' });
-	if(Object.keys(Store.userData).length > 0)
+	if(Object.keys(useLikeStore.userData).length > 0)
 	{
-		await upLikeList(Store.likeList,Store.userData.account)
-		Store.updataUserData({})//清空原先登录信息
+		await upLikeList(useLikeStore.likeList,useLikeStore.userData.account)
+		useLikeStore.updataUserData({})//清空原先登录信息
 	}
 	
 	const data = await uni.request({
@@ -163,8 +165,8 @@ async function login()
 			src:userSrc.value,
 		}
 		console.log(data.data);
-		Store.updataUserData(userData)
-		Store.updataLikeList(data.data.list)
+		useLikeStore.updataUserData(userData)
+		useLikeStore.updataLikeList(data.data.list)
 	}
 	if(data.data.code==302)
 	{
@@ -179,7 +181,7 @@ async function login()
 		})
 		name.value = data.name
 		isShow.value = false
-		Store.updataLikeList(data.list)
+		useLikeStore.updataLikeList(data.list)
 	}
 	
 	

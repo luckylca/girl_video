@@ -1,7 +1,10 @@
 <template>
 	<view class="container">
 		<textarea v-model="textareaContent" placeholder="请粘贴抖音视频链接"/>
-		<button @click="getDouyinContent">识别</button>
+		<div class="buttonBox">
+			<button @click="getDouyinContent">识别</button>
+			<button @click="setDouyinContent">添加到数据源</button>
+		</div>
 		<view class="contentContainer">
 			<image v-for="(item,index) in douyinContentCoverList" :key="index" mode="widthFix" :src=item.value class="douyinCoverContent" @click="openVideo(index)"></image>
 		</view>
@@ -16,17 +19,28 @@
 
 <script setup>
 import { ref } from 'vue';
+import { onReachBottom } from '@dcloudio/uni-app'  
+import { videoListStore } from '../../store/videoList';
 
+const useVideoListStore = videoListStore()
 
 const douyinContentVideoList = ref([])
 const douyinContentCoverList = ref([])
 const textareaContent = ref("")
-const pageNum = ref()
+const pageNum = ref(1)
 const videoUrl = ref("")
 const isVideoPlay = ref(false)
 
+
 async function getDouyinContent() {
 	console.log(textareaContent.value);
+	if(textareaContent.value=="") {
+		uni.showToast({
+			title:"请输入网址",
+			icon:'error'
+		})
+		return
+	}
 	uni.showLoading({
 		title:"加载中"
 	})
@@ -41,6 +55,13 @@ async function getDouyinContent() {
 			"page": pageNum.value
 		},
 	})
+	if(res.data.data.video_url.length==0)	{
+		uni,uni.showToast({
+			title: '视频采集完毕',
+			icon:'error'
+		});
+		return
+	}
 	uni.hideLoading()
 	if(douyinContentVideoList.value.length===0) {
 		douyinContentVideoList.value = res.data.data.video_url
@@ -54,7 +75,16 @@ async function getDouyinContent() {
 		title:"找到" + douyinContentVideoList.value.length + "个内容"
 	})
 	console.log(res.data.data);
+	pageNum.value++
 }
+function setDouyinContent() {
+	
+}
+
+onReachBottom(()=>{
+	console.log("到底部");
+	getDouyinContent()
+})
 function openVideo(e) {
 	videoUrl.value = douyinContentVideoList.value[e]
 	isVideoPlay.value = true
@@ -81,9 +111,14 @@ textarea {
 	border-radius: 20rpx;
 }
 button {
-	width: 300rpx;
+	width: 270rpx;
 	height: 100rpx;
 	margin-bottom: 50rpx;
+}
+.buttonBox {
+	display: flex;
+	padding-left: 50rpx;
+	padding-right: 50rpx;
 }
 .contentContainer {
 	width: 750rpx;
