@@ -11,10 +11,15 @@
 		<view class="videoContiner" v-show="isVideoPlay">
 			<video :src=videoUrl style="width: 100%;height: 100%;" autoplay="true" @ended="end"></video>
 		</view>	
+		<view class="getVideoDataName" v-show="isGetVideoDataName">
+			<input type="text" placeholder="请输入数据源名字" v-model="videoDataName" class="videoDataNameSet"/>
+			<button @click="addVideoData">添加</button>
+		</view>
 	</view>
-	<view class="black" v-show="isVideoPlay" @click="closeVideo">
+	<view class="black" v-show="isBlackShow" @click="closeVideo">
 		
 	</view>
+
 </template>
 
 <script setup>
@@ -27,10 +32,12 @@ const useVideoListStore = videoListStore()
 const douyinContentVideoList = ref([])
 const douyinContentCoverList = ref([])
 const textareaContent = ref("")
+const videoDataName = ref("")
 const pageNum = ref(1)
 const videoUrl = ref("")
 const isVideoPlay = ref(false)
-
+const isBlackShow = ref(false)
+const isGetVideoDataName = ref(false)
 
 async function getDouyinContent() {
 	console.log(textareaContent.value);
@@ -78,19 +85,38 @@ async function getDouyinContent() {
 	pageNum.value++
 }
 function setDouyinContent() {
-	
+	isGetVideoDataName.value = true
+	isBlackShow.value = true
 }
 
 onReachBottom(()=>{
 	console.log("到底部");
 	getDouyinContent()
 })
+function addVideoData()	{
+	let drawItem = {
+		"value": useVideoListStore.drawContent.length,
+		"text": videoDataName.value,
+		"coverList": douyinContentCoverList.value,
+		"videoList": douyinContentVideoList.value
+	}
+	useVideoListStore.addDrawContent(drawItem)
+	uni.showToast({
+		title:'添加成功',
+		icon:'success'
+	})
+	isBlackShow.value = false
+	isGetVideoDataName.value = false
+}
 function openVideo(e) {
 	videoUrl.value = douyinContentVideoList.value[e]
 	isVideoPlay.value = true
+	isBlackShow.value = true
 }
 function closeVideo() {
 	isVideoPlay.value = false
+	isBlackShow.value = false
+	isGetVideoDataName.value = false
 }
 </script>
 
@@ -141,7 +167,28 @@ button {
 	top:10vh;
 	left:75rpx;
 	z-index: 1000;
-
+}
+.getVideoDataName {
+	width: 600rpx;
+	height: 30vh;
+	position: fixed;
+	top:30vh;
+	left:75rpx;
+	z-index: 1000;
+	background-color: white;
+}
+.videoDataNameSet {
+	margin-top: 100rpx;
+	margin-left: 40rpx;
+	margin-right: 40rpx;
+	margin-bottom: 50rpx;
+	height: 100rpx;
+	flex: 1;
+	padding-left: 20rpx;
+	padding-right: 20rpx;
+	box-sizing: border-box;
+	border: 1px red solid;
+	
 }
 .black{
 	background-color: rgba(0, 0, 0, 0.5);

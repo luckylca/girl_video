@@ -7,8 +7,6 @@
 				<view class="videoPlayer">
 					<video referrer-policy="no-referrer" :src="safeGet(videoIndex0)?.url || ''"
 						class="video" id="video0" autoplay="true" @ended="end" v-if="safeGet(videoIndex0)?.url"></video>					
-<!-- 					<video referrer-policy="no-referrer" src="https://www.douyin.com/aweme/v1/play/?video_id=v0300fg10000d1v114fog65hu8tatcb0&line=0&file_id=137127a480a64d448ef01e2f7a8efb63&sign=afa22df38c8b6e02d92c84ec69ee0c04&is_play_url=1&source=PackSourceEnum_PUBLISH"
-						class="video" id="video0" autoplay="true" @ended="end"></video> -->
 					<view class="getTouch" @click="clickGet" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd"></view>
 				</view>
 			</swiper-item>
@@ -138,9 +136,6 @@ const touchMoveProhibit = ref()
 function touchStart(e) {
 	touchStartData.value = e.changedTouches[0].screenY
 	console.log(touchStartData.value);
-}
-function touchMove(e) {
-	// console.log(e);
 }
 function touchEnd(e) {
 	touchEndData.value = e.changedTouches[0].screenY
