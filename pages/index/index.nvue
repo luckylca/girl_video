@@ -5,8 +5,8 @@
 			<!-- item 0 -->
 			<swiper-item>
 				<view class="videoPlayer">
-					<video referrer-policy="no-referrer" :src="safeGet(videoIndex0)?.url || ''"
-						class="video" id="video0" autoplay="true" @ended="end" v-if="safeGet(videoIndex0)?.url"></video>					
+					<video referrer-policy="no-referrer" :src="safeGet(videoIndex0)"
+						class="video" id="video0" autoplay="true" @ended="end" v-if="safeGet(videoIndex0)"></video>					
 					<view class="getTouch" @click="clickGet" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd"></view>
 				</view>
 			</swiper-item>
@@ -14,8 +14,8 @@
 			<!-- item 1 -->
 			<swiper-item>
 				<view class="videoPlayer">
-					<video referrer-policy="no-referrer" :src="safeGet(videoIndex1)?.url || ''"
-						class="video" id="video1" autoplay="true" @ended="end" v-if="safeGet(videoIndex1)?.url"></video>
+					<video referrer-policy="no-referrer" :src="safeGet(videoIndex1)"
+						class="video" id="video1" autoplay="true" @ended="end" v-if="safeGet(videoIndex1)"></video>
 					<view class="getTouch" @click="clickGet" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd"></view>
 				</view>
 			</swiper-item>
@@ -23,8 +23,8 @@
 			<!-- item 2 -->
 			<swiper-item>
 				<view class="videoPlayer">
-					<video referrer-policy="no-referrer" :src="safeGet(videoIndex2)?.url || ''"
-						class="video" id="video2" autoplay="true" @ended="end" v-if="safeGet(videoIndex2)?.url"></video>
+					<video referrer-policy="no-referrer" :src="safeGet(videoIndex2)"
+						class="video" id="video2" autoplay="true" @ended="end" v-if="safeGet(videoIndex2)"></video>
 					<view class="getTouch" @click="clickGet" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd"></view>
 				</view>
 			</swiper-item>
@@ -109,6 +109,13 @@ function safeGet(i) {
 	if (i == null) return null
 	if (i < 0) return null
 	if (i >= list.length) return null
+	const item = list[i]
+	if(typeof item == 'string') {
+		return item
+	}
+	if (typeof item === 'object' && 'url' in item && typeof item.url === 'string') {
+		return item.url
+	}
 	return list[i]
 }
 function clickGet(){
@@ -135,11 +142,9 @@ const touchMoveFirstData = ref()
 const touchMoveProhibit = ref()
 function touchStart(e) {
 	touchStartData.value = e.changedTouches[0].screenY
-	console.log(touchStartData.value);
 }
-function touchEnd(e) {
+async function touchEnd(e) {
 	touchEndData.value = e.changedTouches[0].screenY
-	console.log(touchEndData.value);
 	if(touchEndData.value-touchStartData.value<=-20) {
 		lockNext.value = true
 		autoChange.value = true
@@ -149,7 +154,7 @@ function touchEnd(e) {
 		nextTick(() => {
 			controlIndex.value = (currentIndex.value + 1) % 3
 		})
-		get_video(1)
+		await get_video(1)
 		
 	}
 	else if(touchEndData.value-touchStartData.value>=20) {
@@ -185,7 +190,7 @@ function getDir(newIdx, oldIdx) {
 }
 
 
-function changeSwiper(e) {
+async function changeSwiper(e) {
 	const cur = e.detail.current
 	if (lockNext.value) {
 		lockNext.value = false
@@ -208,7 +213,7 @@ function changeSwiper(e) {
 	}
 	if (dir === 1) {
 		currentVideoIndex.value++
-		get_video(1)
+		await get_video(1)
 	} else if (dir === 0) {
 		currentVideoIndex.value--
 		if (currentVideoIndex.value < 0) currentVideoIndex.value = 0  // 保险
@@ -285,25 +290,43 @@ function share(){
 }
 
 /* 视频请求 */
+let lastIndex = 0
 async function get_video(num) {
-	if (loading.value) return
-	loading.value = true
+	index = await uni.getStorageSync('line')
+	if(index!=lastIndex) {
+		const start = currentVideoIndex.value + 1
+		if (start < useVideoListStore.videoList.length) {
+		  // 当前之后一共还有多少条
+		  const remain = useVideoListStore.videoList.length - start
+		  // 你希望最多删 2 条
+		  const removeCount = Math.min(2, remain)
+	
+		  useVideoListStore.videoList.splice(start, removeCount)
+		  num += removeCount   // 多补 removeCount 条新频道的视频
+		}
+	}
+	if(index<=1) {
+		get_old_video(num)
+	}
+	else {
+		get_douyin_video(num)
+	}
+	lastIndex = index
+}
+
+async function get_old_video(num) {
 	try {
+		if (loading.value) return
+		loading.value = true
 		isLike.value = false
-		index = await uni.getStorageSync('line')
 		while (num-- > 0) {
 			try {
 				const res = await uni.request({ url: urls[index] })
-				// 根据你的接口结构选择字段，下面假设 res.data.link 存视频地址
 				url.value = res.data.link || res.data.data || ''
 				title.value = res.data.title || '暂无标题'
 				if (!url.value) {
 					continue
 				}
-				// nowVideoList.value.push({
-				// 	url: url.value,
-				// 	title: title.value
-				// })
 				useVideoListStore.addVideoItem(
 					{
 						url: url.value,
@@ -318,6 +341,27 @@ async function get_video(num) {
 		loading.value = false
 	}
 }
+let douyinVideoIndex = 0
+async function get_douyin_video(num) {
+	try {
+		if (loading.value) return
+		loading.value = true
+		isLike.value = false
+		while (num-- > 0) {
+			url.value = useVideoListStore.drawContent[index].videoList[douyinVideoIndex]
+			useVideoListStore.addVideoItem(
+				{
+					url: url.value,
+					title: useVideoListStore.drawContent[index].text + '的第' + douyinVideoIndex +'个视频'
+				}
+			)
+			douyinVideoIndex++
+		}
+	} finally {
+		loading.value = false
+	}
+}
+
 async function end() {
 	isAutoPlay.value = await uni.getStorageSync('autoplay')
 	if (isAutoPlay.value) {
