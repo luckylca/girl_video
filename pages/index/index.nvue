@@ -6,10 +6,10 @@
 			<swiper-item>
 				<view class="videoPlayer">
 					<video referrer-policy="no-referrer" :src="safeGetVideo(videoIndex0)"
-						class="video" id="video0" autoplay="true" @ended="end" v-if="safeGetVideo(videoIndex0)"></video>					
+						class="video" id="video0" autoplay="true" @ended="videoEnd" v-if="safeGetVideo(videoIndex0)"></video>					
 					<view class="getTouch" @click="clickGet" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd"></view>
 				</view>
-				<view class="coverPlayer" v-show="isCoverPlay0">
+				<view class="coverPlayer" v-if="isCoverPlay0">
 					<image :src="safeGetCover(coverIndex0)" mode="aspectFit"></image>
 				</view>
 			</swiper-item>
@@ -18,10 +18,10 @@
 			<swiper-item>
 				<view class="videoPlayer">
 					<video referrer-policy="no-referrer" :src="safeGetVideo(videoIndex1)"
-						class="video" id="video1" autoplay="true" @ended="end" v-if="safeGetVideo(videoIndex1)"></video>
+						class="video" id="video1" autoplay="true" @ended="videoEnd" v-if="safeGetVideo(videoIndex1)"></video>
 					<view class="getTouch" @click="clickGet" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd"></view>
 				</view>
-				<view class="coverPlayer" v-show="isCoverPlay1">
+				<view class="coverPlayer" v-if="isCoverPlay1">
 					<image :src="safeGetCover(coverIndex1)" mode="aspectFit"></image>
 				</view>
 			</swiper-item>
@@ -30,21 +30,19 @@
 			<swiper-item>
 				<view class="videoPlayer">
 					<video referrer-policy="no-referrer" :src="safeGetVideo(videoIndex2)"
-						class="video" id="video2" autoplay="true" @ended="end" v-if="safeGetVideo(videoIndex2)"></video>
+						class="video" id="video2" autoplay="true" @ended="videoEnd" v-if="safeGetVideo(videoIndex2)"></video>
 					<view class="getTouch" @click="clickGet" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd"></view>
 				</view>
-				<view class="coverPlayer" v-show="isCoverPlay2">
+				<view class="coverPlayer" v-if="isCoverPlay2">
 					<image :src="safeGetCover(coverIndex2)" mode="aspectFit"></image>
 				</view>
 			</swiper-item>
 		</swiper>
 
 		<view class="toolbar">
-			<view class="box" v-if="!isLike">
-				<image src="/static/basic/like.png" style="width: 100rpx;height: 100rpx;border-radius: 50%;" @click="like"></image>
-			</view>
-			<view class="box" v-else>
-				<image src="/static/basic/likeed.png" style="width: 80rpx;height: 80rpx;border-radius: 50%;" @click="like" :class="{ani:isAni}" class="likeed"></image>
+			<view class="box" ref="likeRef">
+				<image src="/static/basic/like.png" v-if="!isLike" style="width: 100rpx;height: 100rpx;border-radius: 50%;" @click="like" ></image>
+				<image v-else src="/static/basic/likeed.png" style="width: 80rpx;height: 80rpx;border-radius: 50%;" @click="like" class="likeed"></image>
 			</view>
 			<view class="box">
 				<image src="/static/basic/download.png" style="width: 100rpx;height: 100rpx;border-radius: 50%;"></image>
@@ -73,7 +71,7 @@ const controlIndex = ref(0)       // 传给 swiper 的 current（0/1/2）
 const currentIndex = ref(0)       // 记录上一帧 swiper 的 current，用于方向判定
 const nextIndex = ref(0)          // 临时存储 change 事件里传来的 current
 
-/* 三个循环复用的 item 对应的视频索引 */
+/* 三个循环复用的 item 对应的视频索引和封面索引 */
 const videoIndex0 = ref(0)
 const videoIndex1 = ref(1)
 const videoIndex2 = ref(2)
@@ -85,11 +83,8 @@ const coverIndex2 = ref(2)
 /* 双跳时用的锁：只锁住第二次程序性 change(2->0) */
 const lockNext = ref(false)
 
-/* 动画时长 */
-const duration = ref(300)
+//简易防并发
 const loading = ref(false)
-/* 你的视频列表 */
-// const nowVideoList = ref([])
 
 /* 请求相关 */
 const url = ref('')
@@ -112,14 +107,16 @@ const urls = [
 	'http://api.yujn.cn/api/luoli.php?type=json',
 	'https://api.dwo.cc/api/miss?type=json'
 ]
-let lastDate = 0
+
 const useLikeStore = likeStore()
 const useVideoListStore = videoListStore()
-/* 简易防并发 */
-const autoChange = ref(false)
+
+/* 动画部分内容 */
+const duration = ref(300)
+const likeRef = ref(null)
+const BindingX = uni.requireNativePlugin('bindingx');
 
 /* 安全访问列表避免 undefined */
-let isClick = 0
 function safeGetVideo(i) {
 	const list = useVideoListStore.videoList
 	if (i == null) return null
@@ -148,6 +145,9 @@ function safeGetCover(i) {
 	}
 	return list[i]
 }
+
+//双击点赞部分内容
+let lastDate = 0
 function clickGet(){
 	const nowDate = Date.now()
 	if(nowDate-lastDate<200){
@@ -164,12 +164,9 @@ function clickGet(){
 	lastDate = nowDate
 }
 
+//	触摸滑动的部分
 const touchStartData = ref()
 const touchEndData = ref()
-const touchMoveNowData = ref()
-const touchMoveLastData = ref()
-const touchMoveFirstData = ref()
-const touchMoveProhibit = ref()
 function touchStart(e) {
 	touchStartData.value = e.changedTouches[0].screenY
 }
@@ -177,7 +174,6 @@ async function touchEnd(e) {
 	touchEndData.value = e.changedTouches[0].screenY
 	if(touchEndData.value-touchStartData.value<=-20) {
 		lockNext.value = true
-		autoChange.value = true
 		controlIndex.value = currentIndex.value
 		currentVideoIndex.value++
 		syncVideoIndex((currentIndex.value + 1) % 3)
@@ -196,7 +192,6 @@ async function touchEnd(e) {
 		}
 		currentVideoIndex.value--
 		lockNext.value = true
-		autoChange.value = true
 		controlIndex.value = currentIndex.value
 		syncVideoIndex((currentIndex.value + 2) % 3)
 		syncCoverIndex((currentIndex.value + 2) % 3)
@@ -308,7 +303,55 @@ function syncCoverIndex(swiperIdx) {
 	}
 }
 
+let pressToken = null
+let reboundToken = null
+function rebounce (element) {
+  const reboundRes = BindingX.bind({
+	eventType: 'timing',
+	exitExpression: { origin: 't>150' },   // 150ms 回弹
+	props: [{
+	  element,
+	  property: 'transform.scale',
+	  // 从 0.9 增长到 1 : 0.9 + 0.1 * (t / 150)
+	  expression: { origin: '0.9 + 0.1 * t/150' }
+	}]
+  }, (e) => {
+	if (e.state === 'end' || e.state === 'exit') {
+	  reboundToken = null
+	}
+  })
+  reboundToken = reboundRes && reboundRes.token
+}
 function like(){
+	
+	  const node = likeRef.value
+		const element = node.ref || node
+	  // 安全起见，先把上一次 timing 动画解绑
+	  if (pressToken) {
+	    BindingX.unbind({
+	      eventType: 'timing',
+	      token: pressToken
+	    })
+	    pressToken = null
+	  }
+	
+	  // 第一步：按下，200ms 从 scale 1 -> 0.9
+	const pressRes = BindingX.bind({
+		eventType: 'timing',
+		exitExpression: { origin: 't>200' },   // 动画 200ms 结束
+		props: [{
+			element,
+			property: 'transform.scale',         // 改缩放
+			expression: { origin: '1 - 0.1 * t/200' }
+		}]
+	}, (e) => {
+		if (e.state === 'end' || e.state === 'exit') {
+			pressToken = null
+			rebounce(element)
+		}
+	})
+	pressToken = pressRes && pressRes.token
+	
 	isLike.value = !isLike.value
 	if(isLike.value)
 	{	
@@ -464,12 +507,11 @@ async function get_douyin_video(num) {
 		loading.value = false
 	}
 }
-
-async function end() {
+//视频结束部分判断是否自动翻页部分
+async function videoEnd() {
 	isAutoPlay.value = await uni.getStorageSync('autoplay')
 	if (isAutoPlay.value) {
 		lockNext.value = true
-		autoChange.value = true
 		controlIndex.value = currentIndex.value
 		currentVideoIndex.value++
 		syncVideoIndex((currentIndex.value + 1) % 3)
@@ -506,7 +548,7 @@ onBeforeMount(async ()=>{
 </script>
 
 <style scoped>
-/* .layout {
+.layout {
 	flex: 1;
 	z-index: 998;
 }
@@ -543,6 +585,18 @@ onBeforeMount(async ()=>{
 }
 .swiper {
 	flex: 1;
+	position: relative;
+}
+.coverPlayer {
+	flex:1;
+	background: #000;
+	z-index: 998;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+image {
+	flex:1;
 }
 .video	{
 	flex: 1;
@@ -552,13 +606,7 @@ onBeforeMount(async ()=>{
 	background: #000;
 }
 
-.likeed	{
-	transition-property: width, height;
-	transition-duration:1.3s;
-	transition-delay:0.1s;
-	transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1.0);
-} */
-
+/* 
 @keyframes anima
 {
 	0%{transform: scale(1);}
@@ -635,5 +683,5 @@ image {
 	width: 100%;
 	height: 100%;
 	z-index: 999;
-}
+} */
 </style>
