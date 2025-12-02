@@ -55,11 +55,19 @@
 		</view>
 		<view class="drawer">			
 			<uni-drawer ref="showRight" mode="right" :width="150">
-			  <view class="drawer-content">
-				  <view class="checkbox">
-					<uni-data-checkbox class="checkbox" mode="list" v-model="value" :localdata="drawerContentdate" :multiple="false" @change="change"></uni-data-checkbox>
-				  </view>
-			  </view>
+				<view class="drawer-content">
+						<!-- <uni-data-checkbox class="checkbox" mode="list" v-model="value" :localdata="drawerContentdate" :multiple="false" @change="change"></uni-data-checkbox> -->
+					<view class="checkbox" 
+						v-for="item in drawerContentdate" 
+						:key="item.value" 
+						@click="change(item)" 
+						:class="{ isSelcet: selcetIndex===item.value}"
+						:style="getItemStyle(item)"
+						@touchstart="touchStart($event,item)"
+						@touchmove="touchMove($event,item)"
+						@touchend="touchEnd($event,item)"
+					>{{item.text}}</view>
+				</view>
 			</uni-drawer>
 		</view>
 	</view>
@@ -68,7 +76,7 @@
 <script setup>
 import { likeStore } from "../../store/like"
 import { videoListStore } from "../../store/videoList"
-import {ref} from "vue"
+import {ref,onMounted} from "vue"
 const isChecked = ref(false)
 const showRight = ref(null)
 const value = ref(0)
@@ -82,13 +90,73 @@ const isShow = ref(false)
 const account = ref("")
 const password = ref("")
 const name = ref("")
-function change(){
-	console.log(value.value);
+const selcetIndex = ref(0)
+const offXData = ref({});
+function change(e){
+	// console.log(e.value);
 	uni.setStorage({
 		key:"line",
-		data:value.value
+		data:e.value
 	})
+	selcetIndex.value = e.value
 }
+const MAX_SLIDE = 120        // 最大左滑距离（px），用于计算“红色渐变”
+const DELETE_THRESHOLD = -100 // 超过这个距离就认为要删除（px）
+let touchStartData = 0
+let touchMoveData = 0
+let touchEndData = 0
+let activeIndex = null
+const diffX = ref(0)
+function touchStart(e,item) {
+	touchStartData = e.changedTouches[0].clientX
+	activeIndex = item.value
+}
+function touchMove(e,item) {
+	touchMoveData = e.changedTouches[0].clientX
+	diffX.value = touchMoveData-touchStartData
+	if(diffX.value>0) {
+		diffX.value = 0
+	}
+	if(diffX.value<-120) {
+		diffX.value = -120
+	}
+	offXData.value[item.value] = diffX.value
+}
+function touchEnd(e,item) {
+	touchEndData = e.changedTouches[0].clientX
+	if(diffX.value<DELETE_THRESHOLD) {
+		useVideoListStore.deleteDrawContent(item)
+	}
+	offXData.value[item.value] = 0
+	diffX.value = 0
+	activeIndex = null
+}
+function getItemStyle(item) {
+	const offsetX = offXData.value[item.value] || 0
+	const progress = Math.min(Math.abs(offsetX) / MAX_SLIDE, 1) // 0~1
+
+	// 颜色从 白色(#ffffff) → 红色(#f44336)
+	const rStart0 = 255, gStart0 = 255, bStart0 = 255
+	const rEnd0 = 244, gEnd0 = 67, bEnd0 = 54
+
+	const r0 = Math.round(rStart0 + (rEnd0 - rStart0) * progress)
+	const g0 = Math.round(gStart0 + (gEnd0 - gStart0) * progress)
+	const b0 = Math.round(bStart0 + (bEnd0 - bStart0) * progress)
+
+	const rStart1 = 0, gStart1 = 0, bStart1 = 0
+	const rEnd1 = 244, gEnd1 = 67, bEnd1 = 54
+
+	const r1 = Math.round(rStart1 + (rEnd1 - rStart1) * progress)
+	const g1 = Math.round(gStart1 + (gEnd1 - gStart1) * progress)
+	const b1 = Math.round(bStart1 + (bEnd1 - bStart1) * progress)
+	return {
+		transform: `translateX(${offsetX}px)`,
+		backgroundColor: `rgb(${r0}, ${g0}, ${b0})`,
+		color: `rgb(${r1}, ${g1}, ${b1})`,
+	}
+}
+
+
 
 function info(){
 	uni.navigateTo({
@@ -209,7 +277,9 @@ function onSwitchChange(){
 function openDrawer(){
 	showRight.value.open()
 }
-	
+onMounted(()=>{
+})
+
 </script>
 
 <style lang="scss" scoped>
@@ -361,8 +431,35 @@ function openDrawer(){
 .checkbox{
 	display: flex;
 	justify-content: center;
-
+	align-items: center;
+	margin-top: 5px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+	box-sizing: border-box;
+	// width: 100%;
+	height: 60rpx;
+	background: #ffffff;
+	border-radius: 8px;              /* 轻微圆角 */
+	// padding: 16px;                   /* 内边距 */
+	box-shadow: 0 1px 3px rgba(0,0,0,0.12),
+			  0 1px 2px rgba(0,0,0,0.24);  /* 典型 Material 阴影 */
+	transition:
+	box-shadow 0.2s ease,
+	transform 0.15s ease,
+	border-color 0.15s ease,
+	background-color 0.15s ease;
+	border: 1px solid transparent;   /* 为选中状态预留边框过渡 */
+	cursor: pointer;                 /* 表示可点击 */
+	color: #000;
 }      
+.isSelcet {
+	background: #e3f2fd;              /* 淡蓝背景，类似 Material 的选中色 */
+	border-color: #2196f3;            /* 主色边框 */
+	box-shadow: 0 6px 10px rgba(0,0,0,0.18),
+			  0 3px 5px rgba(0,0,0,0.24);  /* 阴影更明显一点 */
+	transform: translateY(-2px);      /* 轻微“抬起” */
+}
 .page-container {
   position: relative;
   width: 100%;

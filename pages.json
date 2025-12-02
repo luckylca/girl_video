@@ -41,6 +41,12 @@
 				"navigationBarTitleText" : "",
 				"onReachBottomDistance": 50
 			}
+		},
+		{
+			"path": "components/tabSwitch/tabSwitch",
+			"style": {
+				"navigationBarTitleText": ""
+			}
 		}
 	],
 	"globalStyle": {

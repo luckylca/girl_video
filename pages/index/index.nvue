@@ -4,37 +4,39 @@
 			:circular="true" :current="controlIndex" @change="changeSwiper" ref="swiperRef" class="swiper">
 			<!-- item 0 -->
 			<swiper-item>
-				<view class="videoPlayer">
+				<view class="coverPlayer" v-if="isCoverPlay0">
+					<image :src="safeGetCover(coverIndex0)" mode="aspectFit" class="image"></image>
+				</view>
+				<view class="videoPlayer" v-else>
 					<video referrer-policy="no-referrer" :src="safeGetVideo(videoIndex0)"
 						class="video" id="video0" autoplay="true" @ended="videoEnd" v-if="safeGetVideo(videoIndex0)"></video>					
 					<view class="getTouch" @click="clickGet" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd"></view>
 				</view>
-				<view class="coverPlayer" v-if="isCoverPlay0">
-					<image :src="safeGetCover(coverIndex0)" mode="aspectFit"></image>
-				</view>
+
 			</swiper-item>
 
 			<!-- item 1 -->
 			<swiper-item>
-				<view class="videoPlayer">
+				<view class="coverPlayer" v-if="isCoverPlay1">
+					<image :src="safeGetCover(coverIndex1)" mode="aspectFit" class="image"></image>
+				</view>
+				<view class="videoPlayer" v-else>
 					<video referrer-policy="no-referrer" :src="safeGetVideo(videoIndex1)"
 						class="video" id="video1" autoplay="true" @ended="videoEnd" v-if="safeGetVideo(videoIndex1)"></video>
 					<view class="getTouch" @click="clickGet" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd"></view>
 				</view>
-				<view class="coverPlayer" v-if="isCoverPlay1">
-					<image :src="safeGetCover(coverIndex1)" mode="aspectFit"></image>
-				</view>
+
 			</swiper-item>
 
 			<!-- item 2 -->
 			<swiper-item>
-				<view class="videoPlayer">
+				<view class="coverPlayer" v-if="isCoverPlay2">
+					<image :src="safeGetCover(coverIndex2)" mode="aspectFit" class="image"></image>
+				</view>
+				<view class="videoPlayer" v-else>
 					<video referrer-policy="no-referrer" :src="safeGetVideo(videoIndex2)"
 						class="video" id="video2" autoplay="true" @ended="videoEnd" v-if="safeGetVideo(videoIndex2)"></video>
 					<view class="getTouch" @click="clickGet" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd"></view>
-				</view>
-				<view class="coverPlayer" v-if="isCoverPlay2">
-					<image :src="safeGetCover(coverIndex2)" mode="aspectFit"></image>
 				</view>
 			</swiper-item>
 		</swiper>
@@ -585,17 +587,15 @@ onBeforeMount(async ()=>{
 }
 .swiper {
 	flex: 1;
-	position: relative;
+/* 	position: relative; */
 }
 .coverPlayer {
-	flex:1;
+	flex: 1;
 	background: #000;
 	z-index: 998;
-	position: absolute;
-	left: 0;
-	top: 0;
+/* 	position: absolute; */
 }
-image {
+.image {
 	flex:1;
 }
 .video	{
@@ -606,8 +606,8 @@ image {
 	background: #000;
 }
 
-/* 
-@keyframes anima
+
+/* @keyframes anima
 {
 	0%{transform: scale(1);}
 	25%{transform: scale(0.9);}
