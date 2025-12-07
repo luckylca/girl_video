@@ -60,6 +60,7 @@
 import { ref, nextTick, onMounted,onBeforeMount } from 'vue'
 import { likeStore } from '../../store/like';
 import { videoListStore } from '../../store/videoList';
+import {onShow} from '@dcloudio/uni-app'
 /* 状态变量 */
 const isLike = ref(false)
 const isAutoPlay = ref(false)
@@ -96,18 +97,6 @@ let index = 0
 const urls = [
 	'http://api.yujn.cn/api/zzxjj.php?type=json',
 	'http://api.yujn.cn/api/xjj.php?type=json',
-	'https://api.yujn.cn/api/nvda.php?type=json',
-	'http://api.yujn.cn/api/heisis.php?type=json',
-	'https://api.yujn.cn/api/manzhan.php?type=json',
-	'http://api.yujn.cn/api/baisis.php?type=json',
-	'http://api.yujn.cn/api/wmsc.php?type=json',
-	'http://api.yujn.cn/api/shejie.php?type=json',
-	'http://api.yujn.cn/api/diaodai.php?type=json',
-	'http://api.yujn.cn/api/jpmt.php?type=json',
-	'http://api.yujn.cn/api/hanfu.php?type=json',
-	'http://api.yujn.cn/api/qingchun.php?type=json',
-	'http://api.yujn.cn/api/luoli.php?type=json',
-	'https://api.dwo.cc/api/miss?type=json'
 ]
 
 const useLikeStore = likeStore()
@@ -442,6 +431,7 @@ let lastVideoIndex = 0
 async function get_video(num) {
 	index = await uni.getStorageSync('line')
 	if(index!=lastVideoIndex) {
+		//检测是否发生变化了
 		const start = currentVideoIndex.value + 1
 		if (start < useVideoListStore.videoList.length) {
 		  // 当前之后一共还有多少条
@@ -453,23 +443,44 @@ async function get_video(num) {
 		  num += removeCount   // 多补 removeCount 条新频道的视频
 		}
 	}
-	if(index<=1) {
-		get_old_video(num)
+	if(index==0) {
+		get_random_video(num)
+	}
+	if(index<=2 && index>0) {
+		get_old_video(num,index)
 	}
 	else {
-		get_douyin_video(num)
+		get_douyin_video(num,index)
 	}
 	lastVideoIndex = index
 }
 
-async function get_old_video(num) {
+async function get_random_video(num) {
+	const num0 = Math.random()
+	if(num0<0.5) {
+		get_old_video(num,0)
+	}
+	else {
+		if(useVideoListStore.drawContent.length>3)
+		{
+			const num1 = Math.floor(Math.random() * (useVideoListStore.drawContent.length - 3)) + 3;
+			const num2 = Math.floor(Math.random() * useVideoListStore.drawContent[num1].videoList.length)
+			get_douyin_video(num,num1,num2)
+		}
+		else {
+			get_old_video(num,0)
+		}
+	}
+}
+
+async function get_old_video(num,urlIndex = index-1) {
 	try {
 		if (loading.value) return
 		loading.value = true
 		isLike.value = false
 		while (num-- > 0) {
 			try {
-				const res = await uni.request({ url: urls[index] })
+				const res = await uni.request({ url: urls[urlIndex] })
 				url.value = res.data.link || res.data.data || ''
 				title.value = res.data.title || '暂无标题'
 				if (!url.value) {
@@ -490,21 +501,28 @@ async function get_old_video(num) {
 	}
 }
 let douyinVideoIndex = 0
-async function get_douyin_video(num) {
+async function get_douyin_video(num, urlIndex, videoItemIndex = douyinVideoIndex) {
 	try {
 		if (loading.value) return
 		loading.value = true
 		isLike.value = false
+		const currentList = useVideoListStore.drawContent[urlIndex].videoList
+		const listLen = currentList.length
+		if (listLen === 0) return 
 		while (num-- > 0) {
-			url.value = useVideoListStore.drawContent[index].videoList[douyinVideoIndex]
-			useVideoListStore.addVideoItem(
-				{
+			const realIndex = videoItemIndex % listLen
+			url.value = currentList[realIndex]
+			if (url.value) {
+				useVideoListStore.addVideoItem({
 					url: url.value,
-					title: useVideoListStore.drawContent[index].text + '的第' + douyinVideoIndex +'个视频'
-				}
-			)
-			douyinVideoIndex++
+					title: useVideoListStore.drawContent[urlIndex].text + ' - ' + realIndex
+				})
+			}
+			videoItemIndex++ 
+			douyinVideoIndex = videoItemIndex // 同步回全局（视你逻辑需求而定）
 		}
+	} catch(e) {
+		console.log(e)
 	} finally {
 		loading.value = false
 	}
@@ -547,9 +565,11 @@ onBeforeMount(async ()=>{
 	await get_cover(3)
 	await nextTick()
 })
+
 </script>
 
 <style scoped>
+
 .layout {
 	flex: 1;
 	z-index: 998;
@@ -587,13 +607,11 @@ onBeforeMount(async ()=>{
 }
 .swiper {
 	flex: 1;
-/* 	position: relative; */
 }
 .coverPlayer {
 	flex: 1;
 	background: #000;
 	z-index: 998;
-/* 	position: absolute; */
 }
 .image {
 	flex:1;
@@ -606,8 +624,8 @@ onBeforeMount(async ()=>{
 	background: #000;
 }
 
-
-/* @keyframes anima
+/* 
+@keyframes anima
 {
 	0%{transform: scale(1);}
 	25%{transform: scale(0.9);}

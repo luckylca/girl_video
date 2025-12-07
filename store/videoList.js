@@ -4,8 +4,9 @@ export const videoListStore = defineStore("videoList",()=>{
 	const videoList = ref([])
 	const coverList = ref([])
 	const drawContent = ref([
-		{"value": 0,"text": "小姐姐1","videoList":[],"coverList":[]},
-		{"value": 1,"text": "小姐姐2","coverList":[],"videoList":[]}
+		{"value": 0,"text": "随机播放","videoList":[],"coverList":[]},
+		{"value": 1,"text": "小姐姐1","coverList":[],"videoList":[]},
+		{"value": 2,"text": "小姐姐2","coverList":[],"videoList":[]},
 	])
 	// const videoListStr = uni.getStorageSync('videoList')
 	// if (videoListStr) {

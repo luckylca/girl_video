@@ -67,8 +67,8 @@
 	      "selectedIconPath": "/static/tabbar_ico/homec.png" // 选中时图标路径
 	    }, {
 	      "pagePath": "pages/setting/setting",
-	      "iconPath": "/static/tabbar_ico/settingc.png", // 默认图标路径
-	      "selectedIconPath": "/static/tabbar_ico/setting.png" // 选中时图标路径
+	      "iconPath": "/static/tabbar_ico/setting.png", // 默认图标路径
+	      "selectedIconPath": "/static/tabbar_ico/settingc.png" // 选中时图标路径
 	    }]
 	  },
 	"uniIdRouter": {}
