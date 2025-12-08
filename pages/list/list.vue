@@ -102,7 +102,6 @@ const ended = ()=>{
 	top:10vh;
 	left:75rpx;
 	z-index: 1000;
-
 }
 .videoList{
 

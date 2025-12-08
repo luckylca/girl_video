@@ -1,183 +1,129 @@
-🎬 Girl Video App
+# 🎬 Girl Video
 
-![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)
+![Version](https://img.shields.io/badge/Version-1.1.0-blue.svg)
 ![Platform](https://img.shields.io/badge/Platform-iOS%20%7C%20Android%20%7C%20H5-green.svg)
-![uni-app](https://img.shields.io/badge/Framework-uni--app-brightgreen.svg)
+![Framework](https://img.shields.io/badge/Framework-uni--app-brightgreen.svg)
 ![License](https://img.shields.io/badge/License-MIT-orange.svg)
 
 <div align="center">
-  <img src="./asset/微信图片_20250529232814.jpg" width="250" alt="应用封面" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+  <img src="./asset/主界面.jpg" width="280" alt="App Cover" style="border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.15);">
 </div>
+
+<br>
 
 ## ✨ 项目简介
 
-**Girl Video** 是一个精心设计的前端练手项目，基于 uni-app 框架开发的跨平台移动应用，专注于提供流畅的美女视频浏览体验。该项目展示了现代前端开发技术和响应式设计的实践应用。
+**Girl Video** 是一款基于 **uni-app** 框架打造的高性能跨平台短视频应用。项目采用 **Vue 3** + **Composition API** 现代开发范式，使用了NVUE和VUE混合的模式，主界面采用NVUE来完成，其他页面则是uniapp页面，结合 **Material Design** 美学设计，致力于提供丝滑流畅的沉浸式视频浏览体验。
+
+本项目集成了抖音视频解析、滑动播放控制、个性化推荐等核心功能，是学习现代前端技术栈（Vue 3, Pinia, Vite）与移动端混合开发的绝佳实战案例。
 
 ## 🚀 核心功能
 
-| 功能 | 描述 |
-|------|------|
-| 📱 **跨平台兼容** | 一套代码，多端运行（iOS、Android、H5） |
-| 🎞️ **智能视频播放** | 流畅的视频浏览和自动播放功能 |
-| ❤️ **收藏系统** | 一键收藏喜欢的视频内容 |
-| 💾 **下载管理** | 支持视频本地下载和管理 |
-| 🔍 **分类导航** | 多种视频分类，便捷查找不同类型内容 |
-| ⚙️ **个性化设置** | 自定义播放设置和应用主题 |
-| 👤 **用户账户** | 支持账户登录和数据同步 |
+| 功能模块 | 详细说明 | 状态 |
+|---------|---------|:---:|
+| 🎥 **沉浸式播放** | 全屏竖屏滑动播放，场景使用 BindingX 优化动画，体验丝滑流畅 | ✅ |
+| 🕷️ **多源解析** | **新增** 支持抖音 无水印视频爬取与解析播放 | ✅ |
+| 🎨 **Material 设计** | 遵循 Material Design 规范，界面精致，交互自然 | ✅ |
+| ⚡ **性能优化** | 使用 BindingX 优化手势交互，告别卡顿与动画突变 | ✅ |
+| 💾 **资源管理** | 支持视频本地下载，支持视频收藏 | ✅ |
+| � **频道管理** | 自定义视频频道切换，支持随机推荐 | ✅ |
+| ❤️ **点赞收藏** | 完整的点赞动画交互与本地收藏夹功能 | ✅ |
+| � **版本更新** | 内置应用内更新检测 | ✅ |
 
 ## 🛠️ 技术栈
 
-<table>
-  <tr>
-    <td align="center"><img src="https://img.icons8.com/color/48/000000/vue-js.png"/><br>Vue 3</td>
-    <td align="center"><img src="https://img.icons8.com/color/48/000000/css3.png"/><br>SCSS</td>
-    <td align="center"><img src="https://img.icons8.com/color/48/000000/javascript.png"/><br>JavaScript</td>
-    <td align="center"><img src="https://img.icons8.com/color/48/000000/api-settings.png"/><br>uni-app</td>
-  </tr>
-</table>
+本项目采用前沿的技术栈进行构建：
 
-- **Vue 3 + Composition API** - 现代化的响应式框架
-- **uni-app** - 跨平台前端应用框架
-- **Pinia** - 下一代Vue状态管理库
-- **Sass/SCSS** - CSS预处理器
-- **uni-ui** - uni-app生态的UI组件库
+- **核心框架**: [Vue 3](https://v3.cn.vuejs.org/) (Composition API)
+- **跨端框架**: [uni-app](https://uniapp.dcloud.io/) 和 NVUE 混合使用的模式
+- **状态管理**: [Pinia](https://pinia.vuejs.org/) (取代 Vuex)
+- **CSS 预处理**: SCSS
+- **UI 组件库**: [uni-ui](https://uniapp.dcloud.io/component/uniui/uni-ui)
+- **动画引擎**: BindingX (Android/iOS 高性能动画)
+- **构建工具**: Vite
 
 ## 📂 项目结构
 
 ```bash
 girl_video/
-├── 📁 components/          # 自定义组件
-│   ├── basic/              # 基础视频播放组件
-├── 📁 pages/               # 应用页面
-│   ├── index/              # 首页
-│   ├── list/               # 视频列表页
-│   ├── info/               # 应用信息页
-│   ├── setting/            # 设置页
-│   └── downloadList/       # 下载管理页
-├── 📁 static/              # 静态资源
-├── 📁 store/               # 状态管理
-├── 📁 uni_modules/         # uni-app扩展组件
-├── 📄 App.vue              # 应用入口组件
-├── 📄 main.js              # 应用入口文件
-└── 📄 manifest.json        # 应用配置文件
+├── 📁 components/          # 公共组件
+│   ├── basic/              # 核心播放器组件，目前暂时弃用
+├── 📁 pages/               # 页面视图
+│   ├── index/              # 首页 (沉浸式视频流)
+│   ├── list/               # 频道列表
+│   ├── info/               # 关于页
+│   ├── setting/            # 设置与账号
+│   ├── douyinSetting/      # 抖音视频爬取页面
+│   └── downloadList/       # 下载管理
+├── 📁 static/              # 静态资源 (图片/图标)
+├── 📁 store/               # Pinia 状态管理模块
+├── 📁 uni_modules/         # 插件模块 (UI库等)
+├── 📄 App.vue              # 根组件
+├── 📄 main.js              # 入口文件
+└── 📄 manifest.json        # 跨端配置
 ```
 
-## ⚙️ 安装和运行
+## ⚙️ 安装与运行
 
-### 环境要求
+### 环境准备
 
-| 工具 | 版本 | 说明 |
-|------|------|------|
-| [HBuilderX](https://www.dcloud.io/hbuilderx.html) | 3.6.0+ | 推荐的开发IDE |
-| Node.js | ≥ 14.0 | JavaScript运行环境 |
-| npm/yarn | 最新版 | 包管理工具 |
+确保您的开发环境已安装以下工具：
 
-### 快速开始
+1. **HBuilderX** (推荐 3.6.0+) - [下载地址](https://www.dcloud.io/hbuilderx.html)
+2. **Node.js** (16.0+) - [下载地址](https://nodejs.org/)
 
-```bash
-# 克隆项目
-git clone https://github.com/your-username/girl_video.git
+### 快速启动
 
-# 进入项目目录
-cd girl_video
+1. **克隆项目**
+   ```bash
+   git clone https://github.com/luckylca/girl_video.git
+   ```
 
-# 安装依赖
-npm install
+2. **导入项目**
+   - 打开 HBuilderX
+   - 选择 `文件` -> `导入` -> `从本地目录导入`，选择 `girl_video` 文件夹
 
-根据文档内容导入需要的组件
+3. **安装依赖**
+   - uni插件市场上按需求下载插件导入
 
-在HBuilder X中运行
+4. **运行调试**
+   - **H5 端**: 顶部菜单 `运行` -> `运行到浏览器` -> `Chrome`
+   - **App 端**: 连接手机，`运行` -> `运行到手机或模拟器` -> `标准基座运行`
 
-```
+## 🧩 关键组件说明
 
-### 构建与发布
+- **VideoPlayer (`index.nvue`)**:
+  应用的核心心脏。封装了 `video` 原生组件，实现了手势滑动控制、双击点赞、进度条拖拽以及与 BindingX 的深度集成，保证了原生级的滑动体验。
 
-```bash
-# 打包H5版本
-npm run build:h5
+- **Store (`pinia`)**:
+  使用 Pinia 模块化管理 `user` (用户信息), `video` (播放列表), `draw` (频道列表) 等状态，数据流清晰可控。
 
-# 打包App
-# 推荐使用HBuilderX的云打包功能
-```
-
-## 🧩 核心组件
-
-项目中使用的主要组件及其功能:
-
-| 组件名称 | 路径 | 功能描述 |
-|---------|------|---------|
-| basic | basic.vue | 核心视频播放组件，支持播放、收藏和下载 |
-| setting | setting.vue | 用户设置和账户管理页面 |
-| downloadList | downloadList.vue | 下载内容管理页面 |
-
-## 📱 应用截图
+## 📱 界面预览
 
 <div align="center">
   <table>
     <tr>
-      <td align="center"><img src="./asset/微信图片_20250529232814.jpg" width="200" alt="首页"/><br>首页视图</td>
-      <td align="center"><img src="./asset/微信图片_20250529232818.jpg" width="200" alt="分类页"/><br>分类浏览</td>
-    </tr>
-    <tr>
-      <td align="center" colspan="2"><b>🔍 更多界面预览请安装体验</b></td>
+      <td align="center"><img src="./asset/主界面.jpg" width="220" alt="首页"/><br><b>沉浸视频流</b></td>
+      <td align="center"><img src="./asset/设置界面.jpg" width="220" alt="分类页"/><br><b>频道探索</b></td>
     </tr>
   </table>
+  <p><i>� 左右滑动查看更多细节</i></p>
 </div>
 
-## 🔮 项目特点
+## 🤝 贡献指南
 
-- **响应式设计** - 完美适配各种屏幕尺寸
-- **流畅动画** - 精心设计的过渡效果
-- **离线功能** - 支持视频缓存和离线观看
-- **性能优化** - 针对移动设备的性能优化
-- **主题定制** - 支持浅色/深色主题切换
+欢迎提交 Issue 和 PR！
+1. Fork 本仓库
+2. 新建分支 `feat/NewFeature`
+3. 提交代码
+4. 发起 Pull Request
 
-## 📚 开发资源
+## � 作者
 
-- [uni-app官方文档](https://uniapp.dcloud.io/component/)
-- [Vue 3文档](https://cn.vuejs.org/)
-- [uni-app项目实战视频教程](https://www.bilibili.com/video/BV1BJ411W7pX)
-- [Composition API指南](https://v3.cn.vuejs.org/guide/composition-api-introduction.html)
-- 使用到的uniapp组件
-  - uni-card
-  - uni-data-checkbox
-  - uni-drawer
-  - uni-icons
-  - uni-load-more
-  - uni-scss
-  - uni-transition(这个在小程序端可以使用，但是不支持安卓端)
-## 🤝 参与贡献
+**Lucky**
+<br>
+<a href="https://github.com/luckylca">Github @luckylca</a>
 
-1. Fork 此仓库
-2. 创建你的特性分支 (`git checkout -b feature/amazing-feature`)
-3. 提交你的改动 (`git commit -m 'Add some amazing feature'`)
-4. 推送到分支 (`git push origin feature/amazing-feature`)
-5. 开启一个 Pull Request
+## 📝 开源协议
 
-## 🐛 问题反馈
-
-如果你发现任何问题或有改进建议，请[提交issue](https://github.com/luckylca/girl_video/issues)或联系开发者。
-
-## 👤 开发者
-
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/luckylca">
-        <br>
-        <sub><b>Lucky</b></sub>
-      </a>
-    </td>
-  </tr>
-</table>
-
-## 📝 许可证
-
-MIT © Lucky
-
----
-
-<p align="center">
-  <i>🌟 如果这个项目对你有帮助，别忘了给它点赞！🌟</i><br>
-  <i>注：此项目仅用于学习和练手，请合法使用相关素材和内容。</i>
-</p>
+MIT License © 2024 Lucky
