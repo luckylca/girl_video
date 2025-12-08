@@ -26,7 +26,16 @@
 		</view>
 	</view>
 	<view class="versionContain" v-if="isContainShow">
+		<view class="" style="display: flex;justify-content: center;align-items: center;padding-bottom: 10rpx;">
+			当前版本更新内容
+		</view>
 		{{releaseNote}}
+	</view>	
+	<view class="nextVersionContain" v-if="isContainShow">
+		<view class="" style="display: flex;justify-content: center;align-items: center;padding-bottom: 10rpx;">
+			下个版本更新内容
+		</view>
+		优化后端同步内容，接入瑟瑟频道支持😋，完善安卓端的权限问题
 	</view>	
 	<view class="black" v-show="isHover" @click="ended">
 		
@@ -229,9 +238,28 @@ function ended() {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	padding: 40rpx;
+	padding: 20rpx;
 	box-sizing: border-box;
 	border: 2rpx solid rgba(255, 255, 255, 0.9);
 	box-shadow: 0 0 50rpx rgba(0, 0, 0, 0.8);
+	flex-direction: column;
+}
+.nextVersionContain{
+	width: 600rpx;
+	height: 15vh;
+	position: fixed;
+	top:30vh;
+	left:75rpx;
+	border-radius: 100rpx;
+	z-index: 1000;
+	background-color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 20rpx;
+	box-sizing: border-box;
+	border: 2rpx solid rgba(255, 255, 255, 0.9);
+	box-shadow: 0 0 50rpx rgba(0, 0, 0, 0.8);
+	flex-direction: column;
 }
 </style>

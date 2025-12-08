@@ -575,15 +575,12 @@ onBeforeMount(async ()=>{
 	z-index: 998;
 }
 .getTouch	{
-	flex: 1;
 	z-index: 999;
 	position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 65%;
-	
+	left: 0;
+	right: 0;
+	top: 15%; 
+	bottom: 40%;
 }
 .toolbar {
 	width: 120rpx;
