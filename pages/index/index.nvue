@@ -441,13 +441,15 @@ async function get_video(num) {
 	
 		  useVideoListStore.videoList.splice(start, removeCount)
 		  num += removeCount   // 多补 removeCount 条新频道的视频
+		  douyinVideoIndex = 0
+		  douyinCoverIndex = 0
 		}
 	}
 	if(index==0) {
 		get_random_video(num)
 	}
-	if(index<=2 && index>0) {
-		get_old_video(num,index)
+	else if(index<=2 && index>0) {
+		get_old_video(num)
 	}
 	else {
 		get_douyin_video(num,index)
