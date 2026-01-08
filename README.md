@@ -17,9 +17,11 @@
 
 本项目集成了抖音视频解析、滑动播放控制、个性化推荐等核心功能，是学习现代前端技术栈（Vue 3, Pinia, Vite）与移动端混合开发的绝佳实战案例。
 
-后端开源链接https://github.com/luckylca/girl_video_backend，佬友轻喷😭😭😭
+[后端开源链接](https://github.com/luckylca/girl_video_backend)，佬友轻喷😭😭😭
 
-目前打算用RN重构，还在慢慢学习摸索中，这是RN的仓库https://github.com/luckylca/GirlVideo_ByReactNative，界面肯定会做好看的😭
+目前打算用RN重构，还在慢慢学习摸索中，这是RN的仓库
+https://github.com/luckylca/GirlVideo_ByReactNative
+界面肯定会做好看的😭
 
 ## 🚀 核心功能
 
@@ -132,3 +134,4 @@ girl_video/
 
 
 MIT License © 2024 Lucky
+
